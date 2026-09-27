@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "minecraft_world": {"type": "http", "url": "http://127.0.0.1:8765/mcp"},
+    "minecraft_client": {"type": "http", "url": "http://127.0.0.1:8766/mcp"},
+    "minecraft_telemetry": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/minecraft-redstone/scripts/telemetry-server.mjs"]
+    }
+  }
+}

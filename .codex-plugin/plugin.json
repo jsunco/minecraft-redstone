@@ -1,0 +1,35 @@
+{
+  "name": "minecraft-redstone",
+  "version": "0.1.0+codex.20260927233317",
+  "description": "Connect Codex to a local Minecraft Java world for building, inspecting and testing vanilla redstone.",
+  "author": {
+    "name": "Local developer"
+  },
+  "keywords": [
+    "minecraft",
+    "redstone",
+    "fabric",
+    "mcp",
+    "learning"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Minecraft Redstone",
+    "shortDescription": "Build and inspect Minecraft with Codex.",
+    "longDescription": "Local Minecraft world/player/inventory access plus optional compact telemetry: cache snapshots, send only changed fields, and request reduced screenshots explicitly. Requires a compatible game-side Fabric bridge. Independent observer still needs implementation. The personal telemetry runner requires local Node.js.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Check the Minecraft connection and inspect my redstone test area.",
+      "Help me build and understand my next redstone circuit."
+    ]
+  },
+  "repository": "https://github.com/jsunco/minecraft-redstone",
+  "homepage": "https://github.com/jsunco/minecraft-redstone"
+}

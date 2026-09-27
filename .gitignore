@@ -1,0 +1,12 @@
+node_modules/
+.mcp.json
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+coverage/
+.minecraft/
+saves/
+world/
+worlds/
