@@ -190,6 +190,12 @@ export class DeltaCache {
         ? { kind: 'delta', watchId, set, remove }
         : { kind: 'unchanged', watchId };
     }
+    // A broad edit can produce a larger patch than the complete state. Deliver
+    // an exact, self-contained snapshot when that is the only fitting record.
+    if (record.kind === 'delta' && size(record) > maxBytes) {
+      const snapshot = { kind: 'snapshot', watchId, value: current };
+      if (size(snapshot) <= maxBytes) record = snapshot;
+    }
     const requiredBytes = size(record);
     if (requiredBytes > maxBytes) {
       const summaries = [

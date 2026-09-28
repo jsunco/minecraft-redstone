@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { existsSync, linkSync, mkdirSync, readFileSync, readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
+import { dirname, join, resolve, win32 } from 'node:path';
 import { homedir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -16,12 +16,20 @@ const pretty = value => `${JSON.stringify(value, null, 2)}\n`;
 const profileUrl = `https://meta.fabricmc.net/v2/versions/loader/${RELEASE.minecraft}/${RELEASE.loader}/profile/json`;
 const apiUrl = `https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/${RELEASE.api}/fabric-api-${RELEASE.api}.jar`;
 
+export function defaultDirectories(platform = process.platform, home = homedir(), env = process.env) {
+  if (platform === 'darwin') return {minecraftDir: join(home, 'Library', 'Application Support', 'minecraft'), gameDir: join(home, 'Library', 'Application Support', 'minecraft-tinygpu-lab')};
+  if (platform === 'win32') { const base = env.APPDATA ?? win32.join(home, 'AppData', 'Roaming'); return {minecraftDir: win32.join(base, '.minecraft'), gameDir: win32.join(base, '.minecraft-tinygpu-lab')}; }
+  return {minecraftDir: join(home, '.minecraft'), gameDir: join(home, '.minecraft-tinygpu-lab')};
+}
 export function optionsFromArgs(argv) {
-  const options = {install: false, minecraftDir: join(homedir(), 'Library', 'Application Support', 'minecraft'),
-    gameDir: join(homedir(), 'Library', 'Application Support', 'minecraft-tinygpu-lab'),
+  const options = {install: false, ...defaultDirectories(),
     bridgeJar: resolve(scriptDir, '../bridge/artifacts/minecraft-fabric-mcp-1.1.0-redstone.1+26.3.jar')};
+  const seen = new Set();
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--install') options.install = true;
+    if (seen.has(argv[i])) throw new Error(`Duplicate option: ${argv[i]}`);
+    seen.add(argv[i]);
+    if (argv[i] === '--help' || argv[i] === '-h') options.help = true;
+    else if (argv[i] === '--install') options.install = true;
     else if (['--minecraft-dir', '--game-dir', '--bridge-jar'].includes(argv[i])) {
       const field = {'--minecraft-dir': 'minecraftDir', '--game-dir': 'gameDir', '--bridge-jar': 'bridgeJar'}[argv[i]];
       const value = argv[++i]; if (!value || value.startsWith('--')) throw new Error('Path option requires a value'); options[field] = resolve(value);
@@ -31,11 +39,15 @@ export function optionsFromArgs(argv) {
   return options;
 }
 export function launcherRunning() {
-  if (process.platform !== 'darwin') return true; // Safe default outside the targeted macOS setup.
-  return execFileSync('/bin/ps', ['-ax', '-o', 'comm='], {encoding: 'utf8'}).split('\n')
-    .some(line => /\/Minecraft(?: Launcher)?\.app\/Contents\/MacOS\/launcher$/.test(line.trim()));
+  try {
+    if (process.platform === 'win32') return /"(?:MinecraftLauncher|Minecraft)\.exe"/i.test(execFileSync('tasklist', ['/FO', 'CSV', '/NH'], {encoding: 'utf8'}));
+    if (!['darwin', 'linux'].includes(process.platform)) return true;
+    return execFileSync('ps', ['-ax', '-o', 'comm='], {encoding: 'utf8'}).split('\n')
+      .some(line => /\/Minecraft(?: Launcher)?\.app\/Contents\/MacOS\/launcher$|(?:^|\/)minecraft-launcher$/i.test(line.trim()));
+  } catch { return true; } // Unknown process state never authorizes profile publication.
 }
 export function inspectSetup(options, isLauncherRunning = launcherRunning) {
+  if (resolve(options.gameDir) === resolve(options.minecraftDir)) throw new Error('The lab game directory must be separate from the existing Minecraft directory');
   const profilesPath = join(options.minecraftDir, 'launcher_profiles.json');
   if (!existsSync(profilesPath)) throw new Error('Official launcher_profiles.json is missing; open the official launcher once before installation');
   const original = readFileSync(profilesPath, 'utf8'); const document = JSON.parse(original);
@@ -47,7 +59,8 @@ export function inspectSetup(options, isLauncherRunning = launcherRunning) {
   const markerPath = join(options.gameDir, markerName); let marker = null;
   if (existsSync(options.gameDir)) {
     if (existsSync(markerPath)) {
-      marker = JSON.parse(readFileSync(markerPath, 'utf8'));
+      try { marker = JSON.parse(readFileSync(markerPath, 'utf8')); }
+      catch { throw new Error('The private setup marker is invalid; its contents were not printed'); }
       if (marker.owner !== 'minecraft-redstone-setup' || marker.versionId !== RELEASE.versionId || marker.gameDir !== resolve(options.gameDir)) throw new Error('Existing game directory has an unrelated setup marker');
     } else if (readdirSync(options.gameDir).length > 0) throw new Error('Target game directory is not empty and is not owned by this installer');
   }
@@ -67,8 +80,10 @@ export function writeNewOrIdentical(path, bytes) {
     return;
   }
   mkdirSync(dirname(path), {recursive: true, mode: 0o700});
-  // Exclusive creation cannot overwrite a file created by another process.
-  writeFileSync(path, bytes, {flag: 'wx', mode: 0o600});
+  // Publish a fully written file without overwriting an intervening creation.
+  const temporary = `${path}.tmp-${randomUUID()}`;
+  try { writeFileSync(temporary, bytes, {flag: 'wx', mode: 0o600}); linkSync(temporary, path); }
+  finally { if (existsSync(temporary)) unlinkSync(temporary); }
 }
 export function publishProfiles(path, original, updated, backupPath) {
   if (readFileSync(path, 'utf8') !== original) throw new Error('Launcher profiles changed during setup; no profile update was published');
@@ -82,6 +97,11 @@ export function publishProfiles(path, original, updated, backupPath) {
 }
 function officialDownload(url, maxBuffer = 32 * 1024 * 1024) {
   return execFileSync('curl', ['--fail', '--silent', '--show-error', '--location', '--proto', '=https', '--proto-redir', '=https', '--max-time', '60', url], {maxBuffer});
+}
+export async function verifiedAsset(path, url, sha256, download = officialDownload) {
+  const bytes = existsSync(path) ? readFileSync(path) : await download(url);
+  if (digest(bytes) !== sha256) throw new Error('Fabric API checksum mismatch; existing files were preserved and nothing was installed');
+  return bytes;
 }
 export function validateFabricProfile(bytes) {
   const value = JSON.parse(bytes.toString());
@@ -107,9 +127,9 @@ export async function setupMinecraft(options, {download = officialDownload, isLa
   if (!check.bridge_available) throw new Error('Compiled bridge artifact is not available; finish the bridge build before installing');
   const bridgeBytes = readFileSync(options.bridgeJar);
   if (bridgeBytes.length < 1000 || bridgeBytes[0] !== 0x50 || bridgeBytes[1] !== 0x4b) throw new Error('Bridge artifact is not a JAR/ZIP');
-  const fabricBytes = await download(profileUrl); validateFabricProfile(fabricBytes);
-  const apiBytes = await download(apiUrl);
-  if (digest(apiBytes) !== RELEASE.apiSha256) throw new Error('Fabric API download checksum mismatch; nothing was installed');
+  const fabricBytes = existsSync(check.version_json) ? readFileSync(check.version_json) : await download(profileUrl); validateFabricProfile(fabricBytes);
+  const apiPath = join(options.gameDir, 'mods', `fabric-api-${RELEASE.api}.jar`);
+  const apiBytes = await verifiedAsset(apiPath, apiUrl, RELEASE.apiSha256, download);
   // Every conflicting path is checked before writing any setup file.
   const configDir = join(options.gameDir, 'config', 'minecraft_fabric_mcp');
   const worldPath = join(configDir, 'config.json'); const clientPath = join(configDir, 'client.json');
@@ -117,11 +137,16 @@ export async function setupMinecraft(options, {download = officialDownload, isLa
     world: endpointConfig(8765, ['blocks', 'structures', 'world', 'entities', 'items', 'server', 'players', 'registries'], 'write', randomBytes(32).toString('hex')),
     client: endpointConfig(8766, ['client'], 'read', randomBytes(32).toString('hex')),
   };
+  for (const [source, port] of [['world', 8765], ['client', 8766]]) {
+    const value = configs[source];
+    if (!value || value.host !== '127.0.0.1' || value.port !== port || value.auth_required !== true || value.allow_remote !== false || !/^[a-f0-9]{64}$/.test(value.bearer_token ?? '')) throw new Error('Private setup credentials or endpoint boundaries are invalid; refusing to reuse them');
+  }
+  if (configs.world.bearer_token === configs.client.bearer_token) throw new Error('World and client credentials must be distinct');
   const marker = check.marker ?? {owner: 'minecraft-redstone-setup', versionId: RELEASE.versionId, gameDir: resolve(options.gameDir), created_at: new Date().toISOString(), configs};
   const files = [
-    [check.version_json, pretty(validateFabricProfile(fabricBytes))],
+    [check.version_json, existsSync(check.version_json) ? fabricBytes : pretty(validateFabricProfile(fabricBytes))],
     [join(options.gameDir, 'mods', 'minecraft-fabric-mcp-1.1.0-redstone.1+26.3.jar'), bridgeBytes],
-    [join(options.gameDir, 'mods', `fabric-api-${RELEASE.api}.jar`), apiBytes],
+    [apiPath, apiBytes],
     [worldPath, pretty(configs.world)], [clientPath, pretty(configs.client)], [join(options.gameDir, markerName), pretty(marker)],
   ];
   for (const [path, bytes] of files) if (existsSync(path) && !readFileSync(path).equals(Buffer.from(bytes))) throw new Error(`Existing file differs; refusing to overwrite: ${path}`);
@@ -130,7 +155,7 @@ export async function setupMinecraft(options, {download = officialDownload, isLa
   for (const [path, bytes] of files) writeNewOrIdentical(path, bytes);
   const runningNow = isLauncherRunning(); let profilePublished = check.existing;
   if (!profilePublished && !runningNow) {
-    publishProfiles(check.profilesPath, check.original, addProfile(check.document, options.gameDir), join(options.gameDir, 'setup-backups', 'launcher_profiles.before.json'));
+    publishProfiles(check.profilesPath, check.original, addProfile(check.document, options.gameDir), join(options.gameDir, 'setup-backups', `launcher_profiles.before-${digest(check.original).slice(0, 16)}.json`));
     profilePublished = true;
   }
   const reread = JSON.parse(readFileSync(check.profilesPath, 'utf8'));
@@ -140,6 +165,10 @@ export async function setupMinecraft(options, {download = officialDownload, isLa
     next: profilePublished ? 'Select TinyGPU Lab in the official launcher when ready. Configure the assistant with MINECRAFT_MCP_CONFIG_DIR; no credentials were printed.' : 'Quit Minecraft Launcher, then rerun --install to publish the staged profile. No existing profile was edited.'};
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  try { console.log(pretty(await setupMinecraft(optionsFromArgs(process.argv.slice(2))))); }
+  try {
+    const options = optionsFromArgs(process.argv.slice(2));
+    if (options.help) console.log('Usage: node scripts/setup-minecraft.mjs [--install] [--minecraft-dir DIR] [--game-dir DIR] [--bridge-jar FILE]\nDefault: read-only preview. --install stages the separate lab and publishes its profile only while the launcher is closed.');
+    else console.log(pretty(await setupMinecraft(options)));
+  }
   catch (error) { console.error(`Minecraft setup: ${error.message}`); process.exitCode = 1; }
 }

@@ -204,3 +204,18 @@ test('known endpoint differences across missed ticks are uncertain rather than e
  const result=decode(await f.service.trace({action:'poll',trace_id}));
  assert.equal(result.complete,false);assert.equal(result.transitions_this_poll,0);assert.equal(result.uncertain_changes_this_poll,1);assert.equal(result.samples[0].edges.low.unknown,true);
 });
+
+test('failed persistence leaves trace cursor and registration at the last committed state',async()=>{
+ const f=fixture(),trace_id=await begin(f),before=clone(f.service.traces[trace_id]);
+ Object.assign(f.page,{next_seq:1,latest_seq:1,last_sample_tick:101,entries:[{seq:1,tick:101,missed_ticks:0,states:[row(0,true)]}]});
+ const originalSave=f.service.save.bind(f.service);f.service.save=()=>{throw new Error('disk unavailable');};
+ await assert.rejects(f.service.trace({action:'poll',trace_id}),/disk unavailable/);
+ assert.deepEqual(f.service.traces[trace_id],before);
+ assert.throws(()=>f.service.register({...definition,id:'new'}),/disk unavailable/);
+ assert.throws(()=>f.service.get('new'),/Unknown circuit/);
+ assert.throws(()=>f.service.register({...definition,description:'undelivered edit'}),/disk unavailable/);
+ assert.equal(f.service.get('adder').description,'');
+ f.service.save=originalSave;
+ const retried=decode(await f.service.trace({action:'poll',trace_id}));
+ assert.equal(f.calls.at(-1).args.after_seq,0);assert.equal(retried.transitions_total,1);assert.equal(retried.current.buses.sum.value,1);
+});

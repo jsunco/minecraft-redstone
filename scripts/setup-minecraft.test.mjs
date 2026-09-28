@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { addProfile, inspectSetup, optionsFromArgs, publishProfiles, RELEASE, setupMinecraft, validateFabricProfile, writeNewOrIdentical } from './setup-minecraft.mjs';
+import { createHash } from 'node:crypto';
+import { addProfile, defaultDirectories, inspectSetup, optionsFromArgs, publishProfiles, RELEASE, setupMinecraft, validateFabricProfile, verifiedAsset, writeNewOrIdentical } from './setup-minecraft.mjs';
 
 function fixture(action) {
   const root = mkdtempSync(join(tmpdir(), 'tinygpu-setup-'));
@@ -18,8 +19,26 @@ test('default is preview and argument parser refuses unknown flags and shared ga
   assert.equal(optionsFromArgs([]).install, false);
   assert.throws(() => optionsFromArgs(['--force']));
   assert.throws(() => optionsFromArgs(['--game-dir']));
+  assert.throws(() => optionsFromArgs(['--install', '--install']), /Duplicate/);
   assert.throws(() => optionsFromArgs(['--minecraft-dir', '/tmp/same', '--game-dir', '/tmp/same']));
 });
+
+test('platform defaults keep the lab separate on macOS, Linux and Windows', () => {
+  assert.equal(defaultDirectories('linux', '/home/example').minecraftDir, '/home/example/.minecraft');
+  assert.equal(defaultDirectories('linux', '/home/example').gameDir, '/home/example/.minecraft-tinygpu-lab');
+  assert.equal(defaultDirectories('darwin', '/Users/example').gameDir, '/Users/example/Library/Application Support/minecraft-tinygpu-lab');
+  assert.equal(defaultDirectories('win32', 'C:\\Users\\Example', {APPDATA: 'C:\\Roaming'}).gameDir, 'C:\\Roaming\\.minecraft-tinygpu-lab');
+});
+
+test('verified cached dependencies support offline resume; corrupt cached bytes are preserved and refused', () => fixture(async ({root}) => {
+  const cached = join(root, 'dependency.jar'); const bytes = Buffer.from('fixture dependency');
+  const hash = createHash('sha256').update(bytes).digest('hex'); writeFileSync(cached, bytes);
+  const noNetwork = () => { throw new Error('No network expected'); };
+  assert.deepEqual(await verifiedAsset(cached, 'https://example.invalid/artifact', hash, noNetwork), bytes);
+  writeFileSync(cached, 'corrupted');
+  await assert.rejects(verifiedAsset(cached, 'https://example.invalid/artifact', hash, noNetwork), /checksum mismatch/);
+  assert.equal(readFileSync(cached, 'utf8'), 'corrupted');
+}));
 
 test('profile insertion preserves every existing profile, unknown field and selected default', () => fixture(({document, options}) => {
   const updated = addProfile(document, options.gameDir, '2026-09-27T00:00:00Z');

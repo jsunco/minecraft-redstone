@@ -155,3 +155,15 @@ test('canonical request keys sort dictionaries but retain array order and exact 
   assert.throws(() => canonicalJson(Object.defineProperty({}, 'x', {enumerable: true, get() { invoked = true; }})), TypeError);
   assert.equal(invoked, false);
 });
+
+test('an oversized delta falls back to an exact fitting snapshot and advances its baseline', () => {
+  const cache = new DeltaCache();
+  const previous = {a: 1, b: 1, c: 1, d: 1, e: 1};
+  const current = {a: 2, b: 2, c: 2, d: 2, e: 2};
+  cache.sample('w', previous);
+  const limit = bytes({kind: 'snapshot', watchId: 'w', value: current});
+  const result = cache.sample('w', current, {maxBytes: limit});
+  assert.equal(result.kind, 'snapshot'); assert.deepEqual(json(result.value), current);
+  assert.ok(bytes(result) <= limit);
+  assert.equal(cache.sample('w', current).kind, 'unchanged');
+});

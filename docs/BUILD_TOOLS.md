@@ -11,7 +11,7 @@ Exported from `scripts/build-service.mjs`:
 
 | Method | Zod schema | Minecraft effect |
 | --- | --- | --- |
-| `status({})` | `buildStatusSchema` | None; local journal only |
+| `status({offset?, limit?})` | `buildStatusSchema` | None; paginated local journal only |
 | `registerRegion(args)` | `buildRegionSchema` | None; registers a bounded lab area |
 | `createPlan(args)` | `buildPlanSchema` | Reads the region and binds the plan to its current state/session |
 | `preview({plan_id})` | `buildPlanRefSchema` | Reads current state; returns operations and compact summaries |
@@ -22,6 +22,13 @@ Exported from `scripts/build-service.mjs`:
 Every method returns an MCP text result. `apply` and `undo` return `isError: true`
 when a started mutation fails; the text retains partial-completion and recovery
 evidence. Validation and preflight failures throw. Calls serialize internally.
+Registering the same region with identical settings is idempotent; a changed
+definition requires a new ID. Failed journal writes roll back newly registered
+regions and plans in memory so retries cannot falsely report saved work.
+
+`build_status` returns the newest plans first, with `total_plans`, `offset`, and
+`next_offset`. It defaults to 16 plans per page and accepts a limit of 1–32.
+Follow `next_offset` to recover older snapshot references after context loss.
 
 ```js
 const builds = new BuildService(bridge, {stateDir: '/absolute/project/.minecraft-assistant/build'});
@@ -105,6 +112,11 @@ Restart loads the journal without any game calls and marks unfinished mutations
 `interrupted`; it never automatically replays them. Saved structures remain in
 the Minecraft world's own structure storage; the journal stores identifiers and
 scanned block states, not screenshots or player metadata.
+Journal loading revalidates region and operation bounds, the permitted palette,
+position coverage, baseline fingerprints, and calculated expected states.
+Inconsistent or corrupted journals are refused before any game call; preserve
+the file for inspection or recover a known-good backup rather than deleting
+snapshot references blindly.
 
 All writes require a `session_id` from `server_get_status`, supplied by the local
 bridge extension. A plan created without that identity can be inspected but

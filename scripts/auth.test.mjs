@@ -72,3 +72,15 @@ test('real MCP transport sends each token only as its endpoint Authorization hea
   assert.equal(seen.filter(r=>JSON.parse(r.body).method==='tools/call').length,3);
  }finally{await bridge.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));f.cleanup();}
 });
+
+test('invalid bearer header bytes are rejected generically before transport can echo a secret',async()=>{
+ const f=fixture();let transports=0;
+ try{
+  for(const suffix of ['\u0000suffix','\tvalue',' value','é','界','"']){
+   const secret=tokens.world+suffix;writeFileSync(f.paths.world,JSON.stringify({auth_required:true,bearer_token:secret}));
+   const bridge=new Bridge(undefined,{headersProvider:source=>bridgeHeaders(source,f.env),transportFactory:()=>{transports++;throw new Error('must not build transport');},clientFactory:()=>({connect:async()=>{},close:async()=>{}})});
+   await assert.rejects(bridge.get('world'),error=>error.message==='Local bridge credential is missing or invalid.'&&!error.message.includes(tokens.world));
+  }
+  assert.equal(transports,0);
+ }finally{f.cleanup();}
+});

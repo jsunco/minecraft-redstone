@@ -15,7 +15,11 @@ The default is a read-only local preview. Installation downloads the profile
 from `meta.fabricmc.net` and Fabric API from `maven.fabricmc.net`, using normal
 HTTPS verification. The API download must match its pinned SHA-256. The source
 bridge JAR must already exist in `bridge/artifacts/` after a successful native
-build. Downloading dependencies does not launch Minecraft.
+build. Downloading dependencies does not launch Minecraft. Reruns reuse validated
+local profile metadata and checksum-verified API bytes, so publishing an already
+staged installation works offline. A corrupt cached artifact is preserved and
+reported instead of silently replaced. Both helpers accept `--help` and reject
+unknown, repeated, or incomplete options.
 
 Default macOS locations:
 
@@ -24,6 +28,12 @@ Default macOS locations:
 - Separate mods and configuration live only in that new game directory.
 - A new Fabric version JSON is added under the launcher's `versions/` directory.
   Existing version files are never overwritten with different contents.
+
+Linux defaults use `~/.minecraft` and `~/.minecraft-tinygpu-lab`; Windows defaults
+use `%APPDATA%\.minecraft` and `%APPDATA%\.minecraft-tinygpu-lab`. Those path choices
+are covered by automated tests. Installation and launcher behavior on Linux and
+Windows have not been verified live. If process discovery fails, profile
+publication remains pending rather than assuming the launcher is closed.
 
 Override paths with `--minecraft-dir`, `--game-dir`, and `--bridge-jar`. Every
 path argument must be supplied separately. The lab game directory cannot equal
@@ -34,7 +44,8 @@ existing target files are refused rather than overwritten.
 
 The helper preserves every launcher JSON field and existing profile. It adds
 only profile ID `tinygpu-lab`, retains the existing default/selected profile,
-backs up the exact original JSON under the lab's `setup-backups/`, and publishes
+backs up the exact original JSON under the lab's `setup-backups/` using a name
+derived from its content hash, and publishes
 the updated JSON with an atomic rename after checking for intervening edits.
 It does not overwrite the global `mods/` directory or copy old worlds.
 
@@ -68,8 +79,17 @@ npm run configure:local -- --project "/path/to/learning-project" \
 ```
 
 The runner reads `config.json` for the world endpoint and `client.json` for the
-user's client. `--direct-tools` cannot be combined with `--game-dir`; direct
-authenticated endpoints need their own local authorization configuration.
+user's client. Reconfiguration retains the existing project and credential paths
+when those options are omitted, preserves unrelated MCP settings, and checks
+that the project directory and local endpoint configurations are valid before
+writing. An identical rerun makes no file change. Token validation errors never
+print credential contents.
+
+For a separately configured observer, add `--observer-config "/path/to/client.json"`;
+that file must describe its loopback endpoint on port 8767. Only its path is
+recorded. `--direct-tools` cannot be combined with managed game credentials,
+including a previously saved `--game-dir`; direct authenticated endpoints need
+their own local authorization configuration.
 World categories enable blocks, structures, world reads,
 entities, items, server, players, and registries with maximum access `write`.
 The client is read-only. Arbitrary scripting tools and admin access are not
