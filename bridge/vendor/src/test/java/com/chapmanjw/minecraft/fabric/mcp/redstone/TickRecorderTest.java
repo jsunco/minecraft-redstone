@@ -40,4 +40,15 @@ class TickRecorderTest {
         assertThrows(IllegalArgumentException.class,()->r.poll(0,0));
         r.sample(-1,List.of(state(0))); assertEquals("clock_reset",r.endReason());
     }
+    @Test void unchangedTicksAdvanceTheClockWithoutUsingTransitionCapacity() {
+        var recorder = new TickRecorder(List.of(state(0)),20,100,16);
+        for(long tick=21;tick<=120;tick++) recorder.sample(tick,List.of(state(0)));
+        var page=recorder.poll(0,512);
+        assertEquals(120,recorder.lastTick()); assertFalse(recorder.active());
+        assertEquals("duration_reached",recorder.endReason());
+        assertEquals(0,page.latestSeq()); assertEquals(0,page.droppedTotal());
+        assertTrue(page.entries().isEmpty()); assertFalse(page.gap());
+        recorder.stop("stopped"); assertEquals("duration_reached",recorder.endReason());
+    }
+
 }

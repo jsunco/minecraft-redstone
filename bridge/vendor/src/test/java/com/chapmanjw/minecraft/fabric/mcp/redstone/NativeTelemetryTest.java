@@ -67,4 +67,29 @@ class NativeTelemetryTest {
         var denied=new NativeTelemetry(new ObjectMapper(),()->0,()->{throw new IllegalStateException("wrong thread");},(d,p,s)->{fail("Read on wrong thread"); return List.of();});
         assertThrows(IllegalStateException.class,()->denied.batch("minecraft:overworld",POINTS,Set.of()));
     }
+    @Test void activePointBudgetIsReleasedOnStopWhileRetainedLogsRemainBounded() {
+        AtomicLong tick = new AtomicLong(100);
+        AtomicInteger reads = new AtomicInteger();
+        var telemetry = new NativeTelemetry(new ObjectMapper(), tick::get, () -> {}, (dimension, points, properties) -> {
+            reads.incrementAndGet();
+            return points.stream().map(point -> state("0")).toList();
+        });
+        var points = java.util.stream.IntStream.range(0,64).mapToObj(i -> new NativeTelemetry.Point(i,64,0)).toList();
+        var first = telemetry.start("minecraft:overworld",points,Set.of(),10,16).get("watch_id").asText();
+        for(int i=0;i<3;i++) telemetry.start("minecraft:overworld",points,Set.of(),10,16);
+        assertThrows(IllegalStateException.class,()->telemetry.start("minecraft:overworld",POINTS,Set.of(),10,16));
+        assertEquals(4,reads.get(),"A rejected watch must not read the world");
+        telemetry.stop(first,false);
+        telemetry.start("minecraft:overworld",points,Set.of(),10,16);
+        assertEquals(5,telemetry.list().get("watches").size(),"Stopped logs remain available");
+        tick.addAndGet(10); telemetry.onEndTick();
+        for(int i=0;i<3;i++) telemetry.start("minecraft:overworld",POINTS,Set.of(),10,16);
+        assertThrows(IllegalStateException.class,()->telemetry.start("minecraft:overworld",POINTS,Set.of(),10,16));
+        telemetry.stop(first,true);
+        telemetry.start("minecraft:overworld",POINTS,Set.of(),10,16);
+        assertEquals(8,telemetry.list().get("watches").size());
+        telemetry.close();
+        assertThrows(IllegalArgumentException.class,()->telemetry.poll(first,0,1));
+    }
+
 }

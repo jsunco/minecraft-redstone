@@ -386,3 +386,39 @@ test('schema discovery survives active reconfiguration, while disabled mode clos
   assert.equal(closed, 0);
   await service.configure({mode: 'disabled'}); assert.equal(closed, 1);
 });
+
+test('a stale schema discovery cannot close the client or erase a newer refreshed catalog', async () => {
+  const began = pending(); const release = pending(); let lists = 0; let closed = 0;
+  const bridge = new Bridge();
+  const client = {close: async () => { closed++; }, listTools: async () => {
+    const version = ++lists;
+    if (version === 1) { began.resolve(); await release.promise; }
+    return {tools: [{name: 'client_status', inputSchema: {type: 'object', title: `version-${version}`}}]};
+  }};
+  bridge.clients.set('client', client);
+  const stale = bridge.schema('client', 'client_status'); await began.promise;
+  const refreshed = await bridge.schema('client', 'client_status', {refresh: true});
+  assert.equal(refreshed.inputSchema.title, 'version-2');
+  release.resolve(); await assert.rejects(stale, /changed during discovery/);
+  assert.equal(bridge.clients.get('client'), client); assert.equal(closed, 0);
+  const retained = await bridge.schema('client', 'client_status');
+  assert.equal(retained.cached, true); assert.equal(retained.inputSchema.title, 'version-2'); assert.equal(lists, 2);
+  await bridge.close();
+});
+
+test('a failed invalidated connection cannot tear down its replacement', async () => {
+  const began = pending(); const release = pending(); const clients = []; const closed = [];
+  const bridge = new Bridge(undefined, {headersProvider: () => ({}), transportFactory: () => ({}), clientFactory: () => {
+    const index = clients.length;
+    const client = {connect: async () => { if (index === 0) { began.resolve(); await release.promise; } },
+      close: async () => { closed.push(index); }, callTool: async () => ({structuredContent: {ready: true}})};
+    clients.push(client); return client;
+  }});
+  const invalidated = bridge.call('client', 'client_status', {}); await began.promise;
+  const dropping = bridge.drop('client');
+  const replacement = await bridge.get('client');
+  release.resolve(); await assert.rejects(invalidated, /invalidated while connecting/); await dropping;
+  assert.equal(bridge.clients.get('client'), replacement); assert.deepEqual(closed, [0]);
+  assert.equal(parseReading(await bridge.call('client', 'client_status', {})).ready, true);
+  await bridge.close();
+});

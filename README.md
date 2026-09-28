@@ -4,6 +4,8 @@ A local assistant toolkit for building and understanding vanilla redstone comput
 
 Includes a Minecraft **26.3** Fabric bridge fork, compact Codex MCP service, construction plans with backups/undo, named signal/bus inspection, finite tick recordings, and a controller for a separate spectator client. Built on [chapmanjw's MIT-licensed Fabric MCP server](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server); provenance is in [bridge](bridge/).
 
+[Architecture](docs/ARCHITECTURE.md) · [Setup](docs/MINECRAFT_SETUP.md) · [Verification](docs/VERIFICATION.md)
+
 ## Implemented capabilities
 
 | Area | Behavior |

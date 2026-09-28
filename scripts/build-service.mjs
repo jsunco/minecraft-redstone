@@ -24,7 +24,7 @@ export const buildRegionSchema = z.object({id: identifier, dimension, box, descr
 export const buildPlanSchema = z.object({id: identifier.optional(), region_id: identifier, label: z.string().min(1).max(100), operations: z.array(operation).min(1).max(BUILD_LIMITS.operations)}).strict();
 export const buildPlanRefSchema = z.object({plan_id: identifier}).strict();
 export const buildUndoSchema = z.object({plan_id: identifier, expected_fingerprint: z.string().regex(/^[a-f0-9]{64}$/).optional()}).strict();
-export const buildStatusSchema = z.object({}).strict();
+export const buildStatusSchema = z.object({offset: z.number().int().min(0).max(BUILD_LIMITS.plans).default(0), limit: z.number().int().min(1).max(32).default(16)}).strict();
 
 // A deliberately small construction palette. No NBT, command blocks, liquids,
 // explosives, portals, containers, or entity tools are exposed by this service.
@@ -67,6 +67,50 @@ function operationBox(op) {
   if (op.op === 'set') return {from: op.position, to: op.position};
   if (op.op === 'fill') return op.box;
   return {from: op.destination, to: Object.fromEntries(axes.map(k => [k, op.destination[k] + op.source_box.to[k] - op.source_box.from[k]]))};
+}
+function normalizedOperations(region, operations) {
+  const result = operations.map(op => {
+    const next = copy(op);
+    if (next.box) next.box = bounded(next.box);
+    if (next.source_box) next.source_box = bounded(next.source_box);
+    if (next.block) allowed(next.block);
+    const target = operationBox(next);
+    if (!contains(region.box, target)) throw new Error('Operation leaves the registered region');
+    if (next.op === 'clone' && (!contains(region.box, next.source_box) || overlaps(next.source_box, target))) throw new Error('Clone source must be inside the region and must not overlap its destination');
+    return next;
+  });
+  if (result.reduce((n, op) => n + volume(operationBox(op)), 0) > BUILD_LIMITS.blocks) throw new Error('Total operation volume exceeds 4096 blocks, including repeated writes');
+  return result;
+}
+function validatedEntries(entries, region) {
+  const parsed = z.array(z.tuple([z.string().max(100), block])).length(volume(region.box)).parse(entries);
+  const states = new Map();
+  for (const [at, state] of parsed) {
+    const parts = at.split(',').map(Number);
+    if (parts.length !== 3) throw new Error('Invalid position in saved build journal');
+    const p = position.parse({x: parts[0], y: parts[1], z: parts[2]});
+    if (key(p) !== at || !inside(p, region.box) || states.has(at)) throw new Error('Saved build journal has duplicate or out-of-bounds positions');
+    allowed(state); states.set(at, state);
+  }
+  return states;
+}
+function validatedStoredPlan(value, regions) {
+  const plan = z.object({id: identifier, region: buildRegionSchema, label: z.string().min(1).max(100),
+    operations: z.array(operation).min(1).max(BUILD_LIMITS.operations), session_id: z.string().min(1).max(200).nullable(),
+    status: z.enum(['planned', 'applying', 'applied', 'applied_unverified', 'partial', 'rolling_back', 'rolled_back', 'rollback_unverified', 'undoing', 'undone', 'undo_unverified', 'interrupted']),
+    before_fingerprint: z.string().regex(/^[a-f0-9]{64}$/), after_fingerprint: z.string().regex(/^[a-f0-9]{64}$/).nullable().optional(),
+    snapshot: z.string().regex(/^mcredstone:undo\/[a-z0-9_-]{1,128}$/).optional(), before: z.unknown(), expected: z.unknown(),
+  }).passthrough().parse(value);
+  plan.region.box = bounded(plan.region.box);
+  if (JSON.stringify(stable(plan.region)) !== JSON.stringify(stable(regions.get(plan.region.id)))) throw new Error('Saved plan does not match its registered region');
+  plan.operations = normalizedOperations(plan.region, plan.operations);
+  const before = validatedEntries(plan.before, plan.region); const expected = validatedEntries(plan.expected, plan.region);
+  if (fingerprint(before) !== plan.before_fingerprint) throw new Error('Saved plan baseline fingerprint is inconsistent');
+  let calculated = before;
+  for (const op of plan.operations) calculated = evolve(calculated, op);
+  if (fingerprint(expected) !== fingerprint(calculated)) throw new Error('Saved plan expected state is inconsistent');
+  plan.before = [...before]; plan.expected = [...expected];
+  return plan;
 }
 function matches(actual, expected) {
   return actual?.id === expected.id && Object.entries(expected.properties).every(([k, v]) => actual.properties[k] === v);
@@ -117,9 +161,11 @@ export class BuildService {
     if (stateDir) {
       try {
         const saved = JSON.parse(readFileSync(join(stateDir, 'build-state.json'), 'utf8'));
-        if (saved.version !== 1 || !Array.isArray(saved.regions) || !Array.isArray(saved.plans)) throw new Error('Invalid build-state journal');
-        this.regions = new Map(saved.regions.map(r => [r.id, buildRegionSchema.parse(r)]));
-        this.plans = new Map(saved.plans.map(p => [p.id, p]));
+        if (saved.version !== 1 || !Array.isArray(saved.regions) || !Array.isArray(saved.plans) || saved.regions.length > BUILD_LIMITS.regions || saved.plans.length > BUILD_LIMITS.plans) throw new Error('Invalid build-state journal');
+        this.regions = new Map(saved.regions.map(r => { const region = buildRegionSchema.parse(r); region.box = bounded(region.box); return [region.id, region]; }));
+        if (this.regions.size !== saved.regions.length) throw new Error('Duplicate region ids in build-state journal');
+        this.plans = new Map(saved.plans.map(p => { const plan = validatedStoredPlan(p, this.regions); return [plan.id, plan]; }));
+        if (this.plans.size !== saved.plans.length) throw new Error('Duplicate plan ids in build-state journal');
         // Never replay an interrupted mutation. A saved snapshot remains available.
         for (const p of this.plans.values()) if (['applying', 'undoing', 'rolling_back'].includes(p.status)) p.status = 'interrupted';
       } catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -162,16 +208,21 @@ export class BuildService {
       ...(plan.error ? {error: plan.error} : {})};
   }
   status(input = {}) {
-    buildStatusSchema.parse(input);
+    const {offset, limit} = buildStatusSchema.parse(input); const plans = [...this.plans.values()].reverse();
     return text({limits: BUILD_LIMITS, regions: [...this.regions.values()].map(r => ({id: r.id, dimension: r.dimension, box: r.box})),
-      plans: [...this.plans.values()].slice(-32).map(p => ({plan_id: p.id, status: p.status, snapshot: p.snapshot ?? null})), omitted_plans: Math.max(0, this.plans.size - 32),
+      plans: plans.slice(offset, offset + limit).map(p => ({plan_id: p.id, status: p.status, snapshot: p.snapshot ?? null})),
+      total_plans: plans.length, offset, next_offset: offset + limit < plans.length ? offset + limit : null,
       persistence: Boolean(this.stateDir), note: 'Session-bound block/state fingerprints; NBT, entities, scheduled ticks and neighbor effects are not conflict-checked. No game connection is opened by status.'});
   }
   registerRegion(input) { return this.run(async () => {
     const region = buildRegionSchema.parse(input); region.box = bounded(region.box);
-    if (this.regions.has(region.id)) throw new Error('Region id already registered; use another id');
+    if (this.regions.has(region.id)) {
+      if (JSON.stringify(stable(this.regions.get(region.id))) === JSON.stringify(stable(region))) return text({region, volume: volume(region.box), already_registered: true, world_modified: false});
+      throw new Error('Region id already registered with different settings; use another id');
+    }
     if (this.regions.size >= BUILD_LIMITS.regions) throw new Error('Region limit reached');
-    this.regions.set(region.id, region); this.persist();
+    this.regions.set(region.id, region);
+    try { this.persist(); } catch (error) { this.regions.delete(region.id); throw error; }
     return text({region, volume: volume(region.box), world_modified: false});
   }); }
   createPlan(input) { return this.run(async () => {
@@ -180,16 +231,7 @@ export class BuildService {
     if (this.plans.size >= BUILD_LIMITS.plans) throw new Error('Plan journal limit reached; archive the local journal before starting another session');
     const id = identifier.parse(parsed.id ?? `plan_${this.idFactory()}`);
     if (this.plans.has(id)) throw new Error('Plan id already exists');
-    const operations = parsed.operations.map(op => {
-      const next = copy(op);
-      if (next.box) next.box = bounded(next.box);
-      if (next.source_box) next.source_box = bounded(next.source_box);
-      if (next.block) allowed(next.block);
-      const target = operationBox(next);
-      if (!contains(region.box, target)) throw new Error('Operation leaves the registered region');
-      if (next.op === 'clone' && (!contains(region.box, next.source_box) || overlaps(next.source_box, target))) throw new Error('Clone source must be inside the region and must not overlap its destination');
-      return next;
-    });
+    const operations = normalizedOperations(region, parsed.operations);
     const total = operations.reduce((n, op) => n + volume(operationBox(op)), 0);
     if (total > BUILD_LIMITS.blocks) throw new Error('Total operation volume exceeds 4096 blocks, including repeated writes');
     const session_id = await this.identity(); const before = await this.scan(region);
@@ -200,7 +242,8 @@ export class BuildService {
     for (const op of operations) expected = evolve(expected, op);
     const plan = {id, region: copy(region), label: parsed.label, operations, session_id, status: 'planned',
       created_at: new Date(this.clock()).toISOString(), before: [...before], expected: [...expected], before_fingerprint: fingerprint(before)};
-    this.plans.set(id, plan); this.persist();
+    this.plans.set(id, plan);
+    try { this.persist(); } catch (error) { this.plans.delete(id); throw error; }
     return text({...this.describe(plan), planned_write_volume: total, before: summary(before), expected: summary(expected), world_modified: false,
       ...(!session_id ? {limitation: 'Session identity missing; inspect plans freely, but apply requires a fresh plan bound to the updated bridge.'} : {})});
   }); }

@@ -79,6 +79,35 @@ test('registration is local; planning and preview read without saving structures
   assert.equal(bridge.calls.find(c => c.tool === 'block_scan_region').args.limit, 8);
 });
 
+test('identical region registration is idempotent; changing an existing region is refused', async () => {
+  const {service, bridge} = await setup();
+  assert.equal(decoded(await service.registerRegion({id: 'lab', dimension: 'minecraft:overworld', box: box(0, 7)})).already_registered, true);
+  await assert.rejects(service.registerRegion({id: 'lab', dimension: 'minecraft:overworld', box: box(0, 6)}), /different settings/);
+  assert.equal(bridge.calls.length, 0);
+});
+
+test('failed persistence does not leave phantom regions or plans that falsely appear saved on retry', async () => {
+  const {service} = await setup(); const persist = service.persist.bind(service);
+  service.persist = () => { throw new Error('disk unavailable'); };
+  const region = {id: 'second', dimension: 'minecraft:overworld', box: box(0, 7)};
+  await assert.rejects(service.registerRegion(region), /disk unavailable/);
+  assert.equal(service.regions.has('second'), false);
+  await assert.rejects(plan(service), /disk unavailable/);
+  assert.equal(service.plans.has('test'), false);
+  service.persist = persist;
+  assert.notEqual(decoded(await service.registerRegion(region)).already_registered, true);
+  assert.equal((await plan(service)).status, 'planned');
+});
+
+test('saved plan summaries are paginated without losing older recovery references', async () => {
+  const {service} = await setup();
+  for (let i = 0; i < 5; i++) await plan(service, [set(0)], `plan${i}`);
+  const first = decoded(service.status({limit: 2})); const second = decoded(service.status({offset: first.next_offset, limit: 2}));
+  assert.deepEqual(first.plans.map(p => p.plan_id), ['plan4', 'plan3']);
+  assert.deepEqual(second.plans.map(p => p.plan_id), ['plan2', 'plan1']);
+  assert.equal(first.total_plans, 5);
+});
+
 test('validated upstream set/fill/clone calls save a disk snapshot before writes and support verified undo', async () => {
   const {service, bridge} = await setup();
   await plan(service, [{op: 'fill', box: box(0, 1), block: state('stone')}, set(2, 'lever', {powered: 'false'}),
@@ -274,5 +303,25 @@ test('persistent journals preserve snapshots and never replay an interrupted mut
     await assert.rejects(resumed.apply({plan_id: 'test'}), /never replayed/);
     const inspected = decoded(await resumed.verify({plan_id: 'test'}));
     assert.equal(decoded(await resumed.undo({plan_id: 'test', expected_fingerprint: inspected.current_fingerprint})).restored, true);
+  } finally { rmSync(dir, {recursive: true, force: true}); }
+});
+
+test('corrupted or expanded persisted plans cannot bypass bounds, palette or fingerprint checks after restart', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'redstone-journal-'));
+  try {
+    const {service, bridge} = await setup({stateDir: dir}); await plan(service);
+    const path = join(dir, 'build-state.json'); const original = JSON.parse(readFileSync(path, 'utf8')); const calls = bridge.calls.length;
+    const mutations = [
+      saved => { saved.plans[0].operations[0].position.x = 100; },
+      saved => { saved.plans[0].operations[0].block.id = 'minecraft:tnt'; },
+      saved => { saved.plans[0].before_fingerprint = '0'.repeat(64); },
+      saved => { saved.plans[0].expected[0][1].id = 'minecraft:glass'; },
+      saved => { saved.regions.push(structuredClone(saved.regions[0])); },
+    ];
+    for (const mutate of mutations) {
+      const saved = structuredClone(original); mutate(saved); writeFileSync(path, JSON.stringify(saved));
+      assert.throws(() => new BuildService(bridge, {stateDir: dir}));
+    }
+    assert.equal(bridge.calls.length, calls);
   } finally { rmSync(dir, {recursive: true, force: true}); }
 });

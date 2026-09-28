@@ -102,7 +102,9 @@ export class CircuitService {
   register(input) {
     const definition=definitionFrom(input);
     if(!own(this.definitions,definition.id)&&Object.keys(this.definitions).length>=64)throw new Error('Circuit limit reached (64).');
-    this.definitions[definition.id]=definition;this.save();return reply({registered:definition.id,signals:definition.signals.length,buses:definition.buses.map(b=>({name:b.name,width:b.bits.length})),bit_order:'least significant first'});
+    const previous=this.definitions[definition.id];this.definitions[definition.id]=definition;
+    try{this.save();}catch(error){if(previous)this.definitions[definition.id]=previous;else delete this.definitions[definition.id];throw error;}
+    return reply({registered:definition.id,signals:definition.signals.length,buses:definition.buses.map(b=>({name:b.name,width:b.bits.length})),bit_order:'least significant first'});
   }
   positions(definition) {return [...new Map(definition.signals.map(s=>[key(s.position),s.position])).values()];}
   async observe(input) {
@@ -214,7 +216,8 @@ export class CircuitService {
     }
     next.cursor=reading.next_seq;next.active=reading.active;next.drained=!reading.active&&reading.next_seq===reading.latest_seq;next.end_reason=reading.end_reason;next.transitions+=changed;
     if(reading.end_reason==='clock_reset')next.complete=false;
-    this.record(next,{kind:'poll',...reading});this.traces[next.trace_id]=next;this.save();
+    this.record(next,{kind:'poll',...reading});this.traces[next.trace_id]=next;
+    try{this.save();}catch(error){this.traces[next.trace_id]=trace;throw error;}
     return boundedReply({trace_id:next.trace_id,active:next.active,end_reason:reading.end_reason,next_seq:next.cursor,latest_seq:reading.latest_seq,has_more:next.cursor<reading.latest_seq,last_tick:next.last_tick,complete:next.complete,gaps:next.gaps,dropped_total:reading.dropped_total,transitions_this_poll:changed,transitions_total:next.transitions,uncertain_changes_this_poll:uncertain,samples,samples_omitted:Math.max(0,reading.entries.length-samples.length),current:decodeCircuit(next.definition,next.rows),artifact:this.artifact(next),...(reading.gap?{warning:'Buffer overflow: recovered current state. Missing transitions are unknown.'}:{})});
   }
 }

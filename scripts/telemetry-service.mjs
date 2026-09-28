@@ -85,7 +85,8 @@ export function bridgeHeaders(source, env=process.env) {
   catch {throw new Error('Local bridge credential configuration is unavailable or invalid.');}
   if(!config||typeof config!=='object'||Array.isArray(config)||typeof config.auth_required!=='boolean')throw new Error('Local bridge credential configuration is unavailable or invalid.');
   if(!config.auth_required)return {};
-  if(typeof config.bearer_token!=='string'||config.bearer_token.length<16||/[\r\n]/.test(config.bearer_token))throw new Error('Local bridge credential is missing or invalid.');
+  // Reject invalid header bytes here: fetch errors can otherwise echo the entire secret.
+  if(typeof config.bearer_token!=='string'||config.bearer_token.length<16||!/^[A-Za-z0-9._~+/-]+=*$/.test(config.bearer_token))throw new Error('Local bridge credential is missing or invalid.');
   return {Authorization:`Bearer ${config.bearer_token}`};
 }
 
@@ -93,7 +94,7 @@ export function bridgeHeaders(source, env=process.env) {
 export class Bridge {
   constructor(urls = {world: 'http://127.0.0.1:8765/mcp', client: 'http://127.0.0.1:8766/mcp', observer: 'http://127.0.0.1:8767/mcp'},
     {clock = () => Date.now(), schemaTtlMs = 60_000,
-      clientFactory = () => new Client({name: 'minecraft-compact-telemetry', version: '0.1.0'}),
+      clientFactory = () => new Client({name: 'minecraft-redstone-assistant', version: '0.2.0'}),
       transportFactory = (url, headers) => new StreamableHTTPClientTransport(new URL(url), {requestInit:{headers}}),
       headersProvider = source => bridgeHeaders(source)} = {}) {
     this.urls = urls; this.clients = new Map(); this.pending = new Map();
@@ -110,7 +111,9 @@ export class Bridge {
     const pending = (async () => {
       const client = this.clientFactory();
       client.onerror = () => {}; // Errors reach the caller; never dump world data to stdout.
-      client.setNotificationHandler?.(ToolListChangedNotificationSchema, () => this.invalidateSchema(source));
+      client.setNotificationHandler?.(ToolListChangedNotificationSchema, () => {
+        if ((this.generations.get(source) ?? 0) === generation) this.invalidateSchema(source);
+      });
       try {
         await client.connect(this.transportFactory(this.urls[source],this.headersProvider(source)), {timeout: 5000});
         if ((this.generations.get(source) ?? 0) !== generation) throw new Error('Connection invalidated while connecting; retry');
@@ -127,11 +130,15 @@ export class Bridge {
     this.catalogs.delete(source); this.catalogReads.delete(source);
   }
   async call(source, name, args) {
+    const generation = this.generations.get(source) ?? 0;
     let client;
     try {
       client = await this.get(source);
       return await client.callTool({name, arguments: args}, undefined, {timeout: name === 'view_capture' ? 15000 : 5000});
-    } catch (error) { if (!client || this.clients.get(source) === client) await this.drop(source); throw error; }
+    } catch (error) {
+      if ((this.generations.get(source) ?? 0) === generation && (!client || this.clients.get(source) === client)) await this.drop(source);
+      throw error;
+    }
   }
   async catalog(source, {refresh = false} = {}) {
     if (refresh) this.invalidateSchema(source);
@@ -140,6 +147,7 @@ export class Bridge {
       return {...cached, cached: true};
     }
     const epoch = this.epochs.get(source) ?? 0;
+    const generation = this.generations.get(source) ?? 0;
     if (this.catalogReads.has(source)) return this.catalogReads.get(source);
     const pending = (async () => {
       let client;
@@ -157,7 +165,13 @@ export class Bridge {
         const catalog = {tools, observedAt: this.clock(), server: client.getServerVersion?.()};
         this.catalogs.set(source, catalog);
         return {...catalog, cached: false};
-      } catch (error) { if (!client || this.clients.get(source) === client) await this.drop(source); throw error; }
+      } catch (error) {
+        // An invalidated read must not close a replacement connection or erase
+        // the successful catalog produced by a newer refresh.
+        if ((this.epochs.get(source) ?? 0) === epoch && (this.generations.get(source) ?? 0) === generation &&
+            (!client || this.clients.get(source) === client)) await this.drop(source);
+        throw error;
+      }
     })();
     this.catalogReads.set(source, pending);
     try { return await pending; }

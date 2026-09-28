@@ -11,7 +11,7 @@ export const observerSchema = z.object({
 const reply=value=>({content:[{type:'text',text:JSON.stringify(value)}]});
 const near=(a,b,tolerance=0.2)=>a&&b&&['x','y','z'].every(k=>Number.isFinite(a[k])&&Number.isFinite(b[k])&&Math.abs(a[k]-b[k])<=tolerance);
 const compactObserver=value=>Object.fromEntries(['player_uuid','dimension','pos','yaw','pitch'].filter(k=>value[k]!==undefined).map(k=>[k,value[k]]));
-const sameAngle=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(((a-b+540)%360)-180)<=0.2;
+const sameAngle=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(((a-b+180)%360+360)%360-180)<=0.2;
 
 /** Controls only an explicitly attached, distinct spectator client on port 8767. */
 export class ObserverService {
@@ -55,7 +55,7 @@ export class ObserverService {
       if (result.isError || result.content?.[0]?.text!=='teleported') throw new Error('Observer teleport failed or unrecognized result.');
       const verified=parseReading(await this.bridge.call('world','player_get_info',{uuid:this.attachment.observer_uuid}));
       if (verified.uuid!==this.attachment.observer_uuid||verified.gameMode!=='spectator'||verified.dimensionId!==args.dimension||!near(verified.position,args.position)) throw new Error('Observer movement could not be verified.');
-      return reply({moved:true,observer_uuid:this.attachment.observer_uuid,position:verified.position,dimension:verified.dimensionId,user_controls:'untouched',render_ready:'Check observer_capture after the client has received chunks.'});
+      return reply({moved:true,observer_uuid:this.attachment.observer_uuid,position:verified.position,dimension:verified.dimensionId,user_controls:'untouched',render_ready:'Use observer_control with action=capture after the client has received chunks.'});
     }
     if (args.action==='capture') {
       if (this.expectedPose&&(observer.dimension!==this.expectedPose.dimension||!near(observer.pos,this.expectedPose.position))) throw new Error('Observer client has not reached the requested pose yet; no stale image returned.');

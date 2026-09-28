@@ -52,3 +52,10 @@ test('overlapping captures serialize so only one image is requested during coold
  assert.equal(first.content[1].type,'image');assert.equal(JSON.parse(second.content[0].text).kind,'rate_limited');
  assert.equal(calls.filter(c=>c.tool==='view_capture').length,1);
 });
+
+test('equivalent yaw values across multiple negative turns do not reject a stable capture',async()=>{
+ const {service,bridge,client}=fixture();await service.run({action:'attach',user_uuid:user,observer_uuid:observer});
+ const original=bridge.call.bind(bridge);
+ bridge.call=async(...args)=>{const result=await original(...args);if(args[1]==='view_capture')client.yaw=-1080;return result;};
+ const result=await service.run({action:'capture'});assert.equal(result.content[1].type,'image');
+});
