@@ -64,3 +64,9 @@ Run `npm run benchmark`. Output is also saved in `scripts/telemetry-benchmark.js
 Compact reads on every poll preserve fixture coverage and reduce bytes by 97.80%. Backoff reduces reads by 76% against raw polling but observes less often. Freshness metadata can cost more text than unchanged samples, explaining the larger output compared with compact reads on every poll. These numbers do not establish live-game token billing, cost, quota, or latency.
 
 `telemetry_status` counts poll payload bytes and screenshots. It does not count the whole conversation, tool schemas, other services, tokens, or account quota.
+
+## Live measurements and local tests
+
+The [live benchmark](docs/LIVE_BENCHMARK.md) measures warmed individual/batched block reads and compares full snapshots with exact deltas of the same native samples. It reports latency and JSON bytes, not model tokens or billing. Keep this distinct from the synthetic table above.
+
+For repeated experiments, use [`circuit_test` or the CLI](docs/TEST_RUNNER.md). The local worker drives inputs, checks advancing native ticks and expected outputs, retains evidence on disk, and returns a bounded summary. A live 64-case OR run completed through MCP without a model turn for each input or observation; see [verification](docs/VERIFICATION.md).

@@ -105,12 +105,16 @@ profile and enters its world.
 
 ## Setup checkpoint, 2026-09-27
 
-The native bridge compiled, and the isolated bridge/API JARs, Fabric version
-metadata, and private endpoint configurations were staged successfully. The new
-launcher profile is still pending because a Minecraft Launcher instance remains
-open. Quit every launcher instance normally and rerun `--install` to publish it.
-No world was copied, game launched, account action performed, or EULA accepted
-by the helper. Live world and independent observer acceptance checks remain open.
+The TinyGPU Lab profile was published and launched on macOS after the remaining
+launcher process was closed. A new Creative, Superflat world with commands was
+created by the user. Both authenticated bridge endpoints connected successfully;
+world/player/inventory reads and a real vanilla-redstone OR circuit passed basic
+live checks. Existing worlds were not copied or modified. See the current
+[verification record](VERIFICATION.md) for coverage and remaining checks.
+
+The separate rendered observer still requires another connected client. Keep the
+pause menu closed during test runs; singleplayer can pause even though bridge
+requests continue to return data. The runner rejects stalled server ticks.
 
 ## Recovery
 

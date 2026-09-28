@@ -10,7 +10,8 @@
     "test": "node --test scripts/*.test.mjs",
     "configure:local": "node scripts/configure-local.mjs",
     "benchmark": "node scripts/telemetry-benchmark.mjs",
-    "setup:minecraft": "node scripts/setup-minecraft.mjs"
+    "setup:minecraft": "node scripts/setup-minecraft.mjs",
+    "circuit:test": "node scripts/circuit-test-cli.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.1",

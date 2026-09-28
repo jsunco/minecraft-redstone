@@ -1,0 +1,3890 @@
+{
+  "schema": "minecraft-redstone-active-encoding-v1",
+  "experiment": "First 32-case job of four-bit adder operand sweep; a=0..1, b=0..15, carry-in=0",
+  "experiment_started_at_utc": "2026-09-28T01:22:44.828Z",
+  "experiment_finished_at_utc": "2026-09-28T01:25:54.079Z",
+  "source": "actual native end-of-tick trace, analyzed offline",
+  "tick_origin": "recorder start; all sample ticks relative",
+  "initial_phase": "server_task",
+  "sampling_phase": "end_server_tick",
+  "covered_end_tick": 3777,
+  "trace_entries": 109,
+  "sample_count": 110,
+  "resync_count": 0,
+  "gap": false,
+  "dropped_total": 0,
+  "missed_ticks_total": 0,
+  "encoding": {
+    "selected_fields": "ordered five output blocks: id and properties.lit; no coordinates or identities",
+    "full_schema": "{tick,kind:\"snapshot\",watchId:\"blocks\",value:[{id,properties:{lit}}]}",
+    "delta_schema": "same relative tick plus DeltaCache.sample(\"blocks\",value), including initial snapshot",
+    "measurement": "sum of UTF-8 JSON.stringify bytes, no whitespace or newline framing",
+    "repeated_full_bytes": 40433,
+    "exact_delta_bytes": 12505,
+    "reduction_percent": 69.072,
+    "sample_kinds": {
+      "snapshot": 1,
+      "delta": 109
+    },
+    "roundtrip_equal": 110
+  },
+  "limits": [
+    "Only the initial baseline and actual change entries are encoded; unchanged ticks are not invented as full observations.",
+    "Both paths encode the same sampled selected states; cadence is change-driven, not fixed-rate polling.",
+    "One initial full baseline is included; this trace had no gaps and required no resynchronization.",
+    "Measurements are local JSON encodings, not live traffic, model tokens, billing or total assistant context.",
+    "Only five output lamps are represented; this does not claim the same reduction for every internal circuit signal."
+  ],
+  "samples": [
+    {
+      "tick": 0,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 127,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 244,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 245,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 358,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 474,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 479,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 480,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 593,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 710,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 711,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 824,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 940,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 945,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 950,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 951,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1064,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1181,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1182,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1295,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1411,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1417,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1418,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1532,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1650,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1651,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1763,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1884,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1885,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1890,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1895,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1896,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1901,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 1905,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2017,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2029,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2125,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2134,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2145,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2150,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2169,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2247,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2267,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2283,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2356,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2361,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2370,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2376,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2385,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2386,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2409,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2482,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2494,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2592,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2601,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2612,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2625,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2636,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2641,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2660,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2714,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2734,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2758,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2774,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2822,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2827,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2832,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2837,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2841,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2842,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2851,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2856,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2860,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2954,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 2966,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3063,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3072,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3083,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3088,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3107,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3186,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3206,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3222,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3294,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3299,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3308,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3314,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3323,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3328,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3332,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3347,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3351,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3422,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3434,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3530,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3540,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3550,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3564,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3574,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3584,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3588,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3598,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3602,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3652,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3672,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3696,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3716,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3720,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3758,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    },
+    {
+      "tick": 3765,
+      "value": [
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "false"
+          }
+        },
+        {
+          "id": "minecraft:redstone_lamp",
+          "properties": {
+            "lit": "true"
+          }
+        }
+      ]
+    }
+  ]
+}

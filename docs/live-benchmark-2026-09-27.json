@@ -1,0 +1,108 @@
+{
+  "benchmark": "live-read-only-v1",
+  "observed_at": "2026-09-28T00:57:32.135Z",
+  "workload": {
+    "blocks_per_round": 8,
+    "rounds_per_path": 20,
+    "warmup_rounds_per_path": 2,
+    "order": "alternating paired paths",
+    "persistent_connection": true,
+    "min_request_interval_ms": 125
+  },
+  "latency": {
+    "measurement": "Sum of upstream call wall times per block workload; intentional rate-limit waits excluded.",
+    "sequential_individual": {
+      "samples": 20,
+      "min_ms": 16.476,
+      "p50_ms": 23.855,
+      "p95_ms": 43.371,
+      "max_ms": 47.465,
+      "mean_ms": 27.315
+    },
+    "atomic_batch": {
+      "samples": 20,
+      "min_ms": 1.659,
+      "p50_ms": 3.161,
+      "p95_ms": 8.272,
+      "max_ms": 10.492,
+      "mean_ms": 3.662
+    },
+    "median_speedup": 7.547
+  },
+  "per_request_latency": {
+    "sequential_individual": {
+      "samples": 160,
+      "min_ms": 1.455,
+      "p50_ms": 2.874,
+      "p95_ms": 7.395,
+      "max_ms": 10.382,
+      "mean_ms": 3.414
+    },
+    "atomic_batch": {
+      "samples": 20,
+      "min_ms": 1.659,
+      "p50_ms": 3.161,
+      "p95_ms": 8.272,
+      "max_ms": 10.492,
+      "mean_ms": 3.662
+    }
+  },
+  "workload_wall_latency_including_rate_limit_waits": {
+    "sequential_individual": {
+      "samples": 20,
+      "min_ms": 998.497,
+      "p50_ms": 1002.378,
+      "p95_ms": 1006.888,
+      "max_ms": 1007.61,
+      "mean_ms": 1002.671
+    },
+    "atomic_batch": {
+      "samples": 20,
+      "min_ms": 118.017,
+      "p50_ms": 125.464,
+      "p95_ms": 130.661,
+      "max_ms": 133.594,
+      "mean_ms": 125.743
+    }
+  },
+  "measured_requests": {
+    "individual": 160,
+    "batch": 20
+  },
+  "overhead_requests": {
+    "individual_warmup": 16,
+    "batch_warmup_and_final": 3
+  },
+  "response_object_json_bytes": {
+    "sequential_individual": 37260,
+    "atomic_batch": 40780
+  },
+  "selected_state_encoding": {
+    "same_batch_samples": 20,
+    "repeated_full_bytes": 17818,
+    "exact_delta_bytes": 1839,
+    "reduction_percent": 89.679,
+    "sample_kinds": {
+      "snapshot": 1,
+      "unchanged": 19
+    }
+  },
+  "observations": {
+    "paired_selected_states_equal": 20,
+    "paired_selected_states_different": 0,
+    "server_ticks_elapsed": 474,
+    "measured_elapsed_including_final_probe_ms": 22701.273,
+    "total_elapsed_ms": 24839.985
+  },
+  "comparison_normalization": "Only vanilla lever face Java enum names FLOOR/WALL/CEILING from individual reads map to serialized floor/wall/ceiling. Raw byte totals remain unchanged; all other state values compare exactly.",
+  "limitations": [
+    "Live localhost MCP reads only; no comparison to a CLI, binary socket, screenshots, or model turnaround.",
+    "Individual reads span separate server tasks; batch reads are atomic within one task. Paired paths sample different times.",
+    "Latency includes server scheduling and tool work; it does not isolate MCP or network overhead.",
+    "Requests start at least 125ms apart. Per-workload active latency sums call durations; the separately reported full wall latency also includes intentional rate-limit waits.",
+    "Response-object JSON bytes exclude HTTP headers and framing. Individual reads include light, hardness and possible NBT that the batch omits.",
+    "Selected-state full versus deltas encodes the exact same batch samples with the same tick marker; this is local serialization, not a measured assistant response.",
+    "UTF-8 bytes are not model tokens, money, quota, or observed end-to-end context savings. An unchanged scene may yield unusually large reductions.",
+    "No transport replacement or performance superiority beyond this workload is established."
+  ]
+}
