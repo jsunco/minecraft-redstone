@@ -38,7 +38,7 @@ register('build_undo', 'Restore the saved structure for an applied plan. Refuses
 register('build_status', 'Recover registered labs and saved plan summaries from project state; no game read.', buildStatusSchema, args=>builds.status(args));
 register('circuit_register', 'Name up to 64 redstone signals and 16 buses. Bus bits are least-significant first. Saves project definitions without game changes.', circuitSchema,args=>circuits.register(args));
 register('circuit_observe', 'Read all named signals in one server task. Decode buses and optionally assert expected values. Unavailable properties remain unknown.', circuitObserveSchema,args=>circuits.observe(args));
-register('circuit_trace', 'Start/poll/stop finite end-of-server-tick recordings, or list saved circuit/trace summaries. Returns compact changes, saves full trace locally. Reports overflow explicitly.', circuitTraceSchema,args=>circuits.trace(args));
+register('circuit_trace', 'Start/poll/stop finite end-of-server-tick recordings; discard fully archived inactive recorders, or list local summaries. Returns compact changes and saves full traces locally. Reports gaps explicitly.', circuitTraceSchema,args=>circuits.trace(args));
 register('observer_control', 'Attach/status/move/capture/detach a distinct spectator client on port 8767. Requires explicit user and observer UUIDs. Never substitutes the user camera. Move changes only the attached observer.',observerSchema,args=>observer.run(args),false);
 await server.connect(new StdioServerTransport());
 process.on('SIGTERM', async () => { await service.bridge.close(); await server.close(); process.exit(0); });

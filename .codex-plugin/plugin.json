@@ -1,6 +1,6 @@
 {
   "name": "minecraft-redstone",
-  "version": "0.2.0+codex.20260927235902",
+  "version": "0.2.0+codex.20260928000256",
   "description": "Build and debug vanilla redstone with compact game data, backed-up construction plans and tick traces.",
   "author": {
     "name": "Local developer"
