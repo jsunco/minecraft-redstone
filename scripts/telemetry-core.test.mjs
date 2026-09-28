@@ -144,3 +144,14 @@ test('invalid data rejects rather than silently losing fields or executing gette
   }
   assert.equal(invoked, false);
 });
+
+test('canonical request keys sort dictionaries but retain array order and exact arguments', async () => {
+  const {canonicalJson} = await import('./telemetry-core.mjs');
+  assert.equal(canonicalJson({b: 1, a: {z: 3, x: 2}}), canonicalJson({a: {x: 2, z: 3}, b: 1}));
+  assert.notEqual(canonicalJson({nbt: 1}), canonicalJson({}));
+  assert.notEqual(canonicalJson([1, 2]), canonicalJson([2, 1]));
+  assert.throws(() => canonicalJson({x: undefined}), TypeError);
+  let invoked = false;
+  assert.throws(() => canonicalJson(Object.defineProperty({}, 'x', {enumerable: true, get() { invoked = true; }})), TypeError);
+  assert.equal(invoked, false);
+});

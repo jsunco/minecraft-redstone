@@ -30,6 +30,11 @@ const setOwn = (target, key, value) => Object.defineProperty(target, key, {
 const pointerPart = key => String(key).replace(/~/g, '~0').replace(/\//g, '~1');
 const size = value => Buffer.byteLength(JSON.stringify(value), 'utf8');
 
+/** Stable, exact JSON for request identities. Validates without invoking getters. */
+export function canonicalJson(value) {
+  return JSON.stringify(copyJson(value));
+}
+
 function dataProperty(value, key) {
   const descriptor = Object.getOwnPropertyDescriptor(value, key);
   if (!descriptor || !own(descriptor, 'value')) {

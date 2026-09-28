@@ -1,0 +1,65 @@
+{
+  "benchmark": "synthetic-mock-v1",
+  "environment": "Injected JavaScript fixtures and deterministic clock; no Minecraft bridge or screenshots",
+  "workload": {
+    "polls": 25,
+    "interval_ms": 5000,
+    "elapsed_simulated_ms": 120000,
+    "watches": 4,
+    "unique_requests_per_poll": 3,
+    "changes": 0,
+    "fixture": "Two projected views of the same client read, 9 inventory slots with bulky components, one redstone output block"
+  },
+  "baseline": {
+    "name": "raw_repeated_MCP_payloads",
+    "upstream_reads": 100,
+    "delivered_payload_bytes": 603325
+  },
+  "cases": [
+    {
+      "name": "compact_every_poll",
+      "measurements": {
+        "source_payload_bytes": 523725,
+        "delivered_text_bytes": 13264,
+        "screenshots": 0,
+        "upstream_reads": 75,
+        "deduplicated_reads": 25,
+        "deferred_watches": 0,
+        "failed_watches": 0
+      },
+      "sample_kinds": {
+        "snapshot": 12,
+        "unchanged": 88
+      },
+      "delivered_payload_reduction_percent": 97.8,
+      "upstream_read_reduction_percent": 25,
+      "observation_semantics": "All watches read each poll; identical requests share one observation. Separate requests are not atomic."
+    },
+    {
+      "name": "compact_with_no_change_backoff",
+      "measurements": {
+        "source_payload_bytes": 167592,
+        "delivered_text_bytes": 16682,
+        "screenshots": 0,
+        "upstream_reads": 24,
+        "deduplicated_reads": 8,
+        "deferred_watches": 68,
+        "failed_watches": 0
+      },
+      "sample_kinds": {
+        "snapshot": 8,
+        "unchanged": 24,
+        "deferred": 68
+      },
+      "delivered_payload_reduction_percent": 97.23,
+      "upstream_read_reduction_percent": 76,
+      "observation_semantics": "Fewer fresh observations; explicit deferred responses report their age. Does not provide equal temporal coverage to raw polling."
+    }
+  ],
+  "limitations": [
+    "UTF-8 JSON payload bytes only; not measured model tokens, monetary cost or live performance.",
+    "Inventory component omission and selected fields intentionally deliver less detail than raw readings.",
+    "Payload sizes and savings depend on real bridge output and chosen fields.",
+    "Backoff can delay change detection and cannot capture transient redstone pulses."
+  ]
+}

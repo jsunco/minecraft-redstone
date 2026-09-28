@@ -1,0 +1,54 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    # Stonecutter creates the per-version subprojects dynamically (stonecutter.create()
+    # + mapBuilds), NOT via include(...) in settings.gradle.kts. Dependabot parses build
+    # files statically and never executes the build, so it cannot discover them from the
+    # root alone -- versions/<ver>/build.gradle.kts was invisible to it, leaving the
+    # Spotless/Loom/Checkstyle pins there unwatched. List each build root explicitly.
+    # Paths are enumerated rather than globbed because glob support under `directories`
+    # is not documented for the gradle ecosystem.
+    # NOTE: adding a new Minecraft target means adding its directory here too, or the
+    # plugin pins in versions/<ver>/build.gradle.kts go unwatched.
+    directories:
+      - "/"
+      - "/versions/1.21.11"
+      - "/versions/26.1.1"
+      - "/versions/26.1.2"
+      - "/versions/26.2"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - gradle
+    # The same toolchain plugin is pinned in all three version subprojects, so an
+    # ungrouped bump would open three near-identical PRs. Group them into one.
+    groups:
+      gradle-toolchain:
+        patterns:
+          - "com.diffplug.spotless*"
+          - "net.fabricmc.fabric-loom*"
+          - "com.puppycrawl.tools:checkstyle"
+    # Only surface updates for dependencies we declare directly (the mod's
+    # compile/runtime/test deps and the plugin versions we pin). The deep
+    # transitive dependencies of the Fabric Loom and Stonecutter Gradle
+    # plugins (netty, lz4, jgit, plexus, log4j, commons-*, …) are build-time
+    # tooling that never ships in the mod jar; we don't pin them and can't
+    # bump them without forcing plugin internals, so leaving them out of
+    # scope keeps the alert/PR stream actionable. See SECURITY.md.
+    allow:
+      - dependency-type: "direct"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "ci"
+    labels:
+      - dependencies
+      - github-actions

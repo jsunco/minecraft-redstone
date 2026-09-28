@@ -1,0 +1,72 @@
+# Gradle
+.gradle/
+build/
+out/
+classes/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Stonecutter
+versions/*/build/
+versions/*/.gradle/
+versions/*/src/
+
+# JaCoCo
+*.exec
+versions/*/build/jacoco/
+versions/*/build/reports/jacoco/
+
+# Stonecutter preprocessed sources
+build/generated/stonecutter/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+.factorypath
+
+# Fabric / Loom
+run/
+runs/
+remappedSrc/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local config / secrets
+*.local.properties
+config/mcp_server/config.json
+config/mcp_server/*.token
+
+# Logs
+*.log
+logs/
+
+# Test output
+test-output/
+*.hprof
+
+# Backup files
+*.orig
+*.bak
+*.rej
+*~
+
+# Local-test cache (test-in-game.ps1 downloads Fabric installer + API here)
+scripts/.cache/
+
+# Local research notes and verification receipts (upgrade baselines, wire-format
+# captures, investigation notes). Kept on disk for reference, never committed.
+.research/

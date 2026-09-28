@@ -1,92 +1,66 @@
-# Optional compact Minecraft telemetry
+# Compact observation
 
-Implemented 2026-09-27. The adapter is locally tested; actual Minecraft readings remain unverified because the game-side Fabric bridge is not running.
+Structured game APIs replace repeated full-state dumps and routine screenshots. F3 need not be visible; no OCR is used. Raw readings stay in the local service, which selects fields and compares cached snapshots. It never continuously prompts the model. Polling occurs only on tool requests; explicitly started finite native traces sample inside Minecraft.
 
-## How it works
+## Configuration
 
-Read the same underlying game state that supplies useful debug information, through the bridge's APIs. F3 does not need to be visible and no OCR is needed. Coordinates, dimension, facing, held item and targeted block are available upstream. Inventory and exact redstone properties add information beyond the F3 overlay. Not every F3 diagnostic is exposed by the current bridge.
+Modes: `disabled` (default, no telemetry reads), `data` (compact state), and `hybrid` (also explicit `telemetry_view` images). Other explicitly invoked circuit/build/observer tools have their own behavior. Disabling telemetry does not disable them.
 
-The local Node process holds each selected watch's last delivered snapshot. It compares new readings locally and sends only additions, changes and removals. A watch can be a player's status, selected inventory, exact output block or small region summary. Raw readings are not added to the assistant conversation. Nothing runs continuously between tool requests.
-
-Modes:
-
-| Mode | Behavior |
-|---|---|
-| `disabled` | Default. Poll makes no game reads; raw bridge tools remain available. |
-| `data` | Structured snapshot/delta/unchanged replies. No images from this service. |
-| `hybrid` | Same structured replies plus an explicit `telemetry_view` tool when a picture helps. No automatic screenshot stream. |
-
-The original world/client endpoints remain available for building and exceptional detailed inspection. This mode does not remove their tool schemas or erase context already used. It is an optional read adapter, not a new independent camera.
-
-## Use
-
-After the Fabric bridge is running and the new plugin tools have loaded, ask Codex to enable compact Minecraft mode. A new Codex chat is the reliable boundary for picking up the installed MCP tool changes; project progress files preserve this work.
-
-The service provides five tools: telemetry_status, telemetry_configure, telemetry_source_schema, telemetry_poll, telemetry_view.
-
-First inspect the exact argument schema with telemetry_source_schema for each tool needing arguments. For example, current client_status takes no arguments. An initial configuration is:
+Inspect `telemetry_source_schema` before configuring a watch. Example:
 
 ```json
 {
-  "mode": "hybrid",
-  "watches": [
-    {
-      "id": "player",
-      "source": "client",
-      "tool": "client_status",
-      "arguments": {},
-      "fields": ["in_game", "dimension", "pos", "yaw", "pitch", "held_item", "held_count"]
-    },
-    {
-      "id": "target",
-      "source": "client",
-      "tool": "sense_crosshair",
-      "arguments": {}
-    }
-  ],
-  "max_text_bytes": 8000,
-  "min_poll_ms": 5000
+  "mode":"hybrid",
+  "min_poll_ms":5000,
+  "max_text_bytes":8000,
+  "max_concurrency":2,
+  "no_change_backoff":true,
+  "max_backoff_ms":60000,
+  "watches":[
+    {"id":"player","source":"client","tool":"client_status","arguments":{},"fields":["in_game","player_uuid","dimension","pos","yaw","pitch","held_item","held_count"],"interval_ms":5000},
+    {"id":"target","source":"client","tool":"sense_crosshair","arguments":{},"on_demand":true}
+  ]
 }
 ```
 
-Then call telemetry_poll after a relevant action. Add a watch for the particular inventory/output block when needed. Do not poll everything merely because it is available. Configure replaces all watches and resets baselines. Selecting `disabled` stops this adapter's reads; it does not disable direct MCP endpoints.
+Configure at most 8 watches. Configuration replaces watches and resets baselines. Identical tools and arguments share one upstream read, even with different field projections. Unique reads use bounded concurrency (default 2, maximum 4). Polls serialize baseline commits.
 
-To recover after context compaction or a missed response, call telemetry_poll with `full:true`. Automatic full refresh happens on the next poll after 60 seconds and after read errors; there is no background timer. Sequence numbers expose missed responses. Source failures are reported as unavailable, not unchanged. Oversize readings retain their old baseline and can be retried with narrower fields or larger bounds.
+`telemetry_poll` reads due automatic watches. Explicit `watch_ids` bypass each watch's cadence/backoff but retain the global minimum. On-demand watches read only when selected or included in a full resync. Deferred replies report no fresh observation and the age of the last reading.
 
-## Data shape and budgets
+`full: true` requests a fresh baseline for selected watches, or all watches if none are selected. Use it after context loss or missed responses. Each watch also refreshes fully at its next actual read after 60 seconds. There are no hidden background reads. Oversized resyncs remain pending. A failed watch invalidates only its own baseline.
 
-A snapshot contains `value`. A delta contains `set:[{path,value}]` and `remove:[path]`, using RFC6901 JSON Pointers. Apply removals then sets. An unchanged record confirms only equality at sampling time. Explicit slot inventories normalize to maps; implicit-index inventories keep indices, allowing a single changed item count to be delivered. Values are not additionally rounded. Empty/missing/null fields remain distinct.
+## Response contract
 
-Default projection omits bulky NBT/component payloads; explicit fields can request them when needed. Nonexistent selections return unavailable when no selected fields exist. Defaults: eight watches maximum, an 8,000-byte total poll text budget (configurable 2,048–16,000), and five seconds minimum between polls. The interval increases for many watches to budget roughly 40 read calls/minute per endpoint, below upstream's default 60; other tools still share that upstream budget. Rate limits remain possible.
+| Kind | Meaning |
+|---|---|
+| snapshot | Complete selected value |
+| delta | RFC 6901 JSON Pointer removals followed by assignments against the previously delivered sample |
+| unchanged | Equal at sampling times; intermediate transitions still possible |
+| deferred | No fresh read, with freshness/cadence metadata |
+| unavailable / oversize | Unknown, not a cached success |
 
-Region summaries are limited to 4,096 blocks by this adapter. They are material histograms, not redstone-state monitors. Use block_get_state for specific output power/lit/powered fields. Broad entity/region scans, mutations, commands and event drains are deliberately outside this adapter; use the appropriate direct bridge tools when the task requires them.
+Explicit unique slot IDs normalize to maps; implicit-index inventories retain indices. Missing/null/deleted values remain distinct. No numeric rounding. Default projection omits bulky NBT/components; explicit fields can request available values. TOON and JSON readings are validated.
 
-Upstream can return JSON or TOON text rather than structuredContent. The official TOON decoder handles those reads before projection/diffing. Structured inputs are capped at 2 MB after the SDK delivers the response. This is not a network-stream memory cap. The model-facing output cap is enforced separately. Default omission and oversize errors are explicit in this workflow; no false claim of complete inventory/world coverage is made.
+The default total poll text budget is 8,000 UTF-8 bytes, configurable from 2,048 to 16,000. The default minimum interval is 5 seconds, increased with workload to leave space under upstream rate limits. Raw decoded readings are capped at 2 MB after SDK receipt, not at the network-stream layer. Region summaries cover at most 4,096 blocks; native batches cover at most 512 positions. Material histograms do not substitute for `power`, `lit`, or `powered` state.
 
-## Pictures
+Schema catalogs share discovery, expire after their time limit, and invalidate on refresh, tool-list changes, or disconnect. They report their age. `connection_check` defaults to fresh discovery; cached checks report `connection_checked: false`. Discovery is not proof that a world is loaded. The installed authenticated endpoints require the local configuration directory described in [setup](docs/MINECRAFT_SETUP.md); tokens are read locally and are never returned in observations.
 
-Only hybrid mode permits telemetry_view. Default downscale=4, allowed range 2–8; 30-second cooldown; one returned image capped at 512 KB decoded. The adapter always sets close_screen=false, preserving the user's inventory/menu. Oversized images require a more reduced explicit retry. Cropping is not implemented.
+## Pictures and timing
 
-The current endpoint sees the user's local client. It is not an independent observer; a separate observer renderer is still outstanding. Images are not sent for routine state reads. Visual inspection remains useful for orientation, layout mistakes and final demonstration.
+`telemetry_view` requires hybrid mode, defaults to `downscale: 4` (range 2–8), preserves the GUI with `close_screen: false`, and limits successful images to one per 30 seconds and 512 KB decoded. It takes no automatic pictures and performs no cropping. It sees the user's client. [Observer control](docs/OBSERVER.md) explicitly targets a separate spectator client.
 
-## Limits and cost measurement
+Separate watch calls are not an atomic world snapshot. [`circuit_observe`](docs/CIRCUIT_TOOLS.md) reads a native batch in one server task. `circuit_trace` records finite end-of-server-tick samples with cursors, gap recovery, and local artifacts. No polling strategy reconstructs missed pulses.
 
-Ordinary polling can miss short pulses, and multiple tool reads are not an atomic tick snapshot. Reliable redstone waveforms require a tick-level recorder inside the game. Existing event callbacks do not cover all redstone/inventory changes, and the upstream event queue can lose entries. This adapter compares actual reads instead of assuming a reliable event stream.
+## Reproducible synthetic measurement
 
-telemetry_status exposes source payload bytes and delivered text bytes for polls, plus screenshots sent. These are payload measurements, not token billing, model cost, account rate-limit usage, or a promised percentage saving. Actual savings require comparable live tasks. Tool descriptions and earlier conversation still consume context.
+Run `npm run benchmark`. Output is also saved in `scripts/telemetry-benchmark.json`.
 
-## Local implementation and tests
+| Mode, 25 polls and four fixture watches | Delivered JSON bytes | Mock upstream calls |
+|---|---:|---:|
+| Repeated raw reads | 603,325 | 100 |
+| Compact every poll | 13,264 | 75 |
+| Compact with backoff | 16,682 | 24 |
 
-Run from this repository's root:
+Compact reads on every poll preserve fixture coverage and reduce bytes by 97.80%. Backoff reduces reads by 76% against raw polling but observes less often. Freshness metadata can cost more text than unchanged samples, explaining the larger output compared with compact reads on every poll. These numbers do not establish live-game token billing, cost, quota, or latency.
 
-```sh
-npm ci --ignore-scripts
-npm run configure:local
-npm test
-```
-
-Node 22+ is required. Exact dependency versions and integrity hashes are locked in package-lock.json. Local setup generates an ignored .mcp.json with the Node executable and checkout path; rerun it after moving the checkout. The adapter listens on stdio, opens no network listening port, and uses fixed localhost game endpoints. See README.md for installation.
-
-24 tests passed: delta correctness, slot changes/deletion, null/missing, Unicode byte budgets, oversize baseline retention, prototype safety, parsing real upstream-shaped TOON, read-only allowlist, small budgets/eight watches, reconnection, image controls, real SDK stdio handshake, and mock HTTP MCP exchange. A real connection probe returned unavailable/fetch failed because the client bridge is absent. No live game result or savings measurement has been established.
-
-Sources: [upstream tools](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server/blob/main/docs/tools.md), [actual event wiring](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server/blob/main/src/main/java/com/chapmanjw/minecraft/fabric/mcp/tools/events/EventWiring.java), [TOON tool results](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server/blob/main/src/main/java/com/chapmanjw/minecraft/fabric/mcp/protocol/ToolResult.java), [official MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk), [TOON decoder](https://github.com/toon-format/toon).
+`telemetry_status` counts poll payload bytes and screenshots. It does not count the whole conversation, tool schemas, other services, tokens, or account quota.

@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/chapmanjw/minecraft-java-fabric-mcp-server",
+  "commit": "e2d571ca087ee26fadc431319d2632ce677d88da",
+  "retrieved": "2026-09-27",
+  "license": "MIT",
+  "target": "26.3",
+  "fabric_loader": "0.19.5",
+  "fabric_api": "0.161.0+26.3",
+  "loom": "1.18.2",
+  "source_archive_sha256": "7a9adc0ba542938ae6bcca667808ca6f5839965e05e9ed0de1bee6d01df6c312"
+}

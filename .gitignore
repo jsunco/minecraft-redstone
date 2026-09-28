@@ -10,3 +10,5 @@ coverage/
 saves/
 world/
 worlds/
+.minecraft-assistant/
+artifacts/

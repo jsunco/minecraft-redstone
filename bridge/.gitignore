@@ -1,0 +1,7 @@
+.downloads/
+.gradle-cache/
+artifacts/
+**/build/
+**/.gradle/
+**/run/
+*.log

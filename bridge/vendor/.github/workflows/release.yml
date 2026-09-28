@@ -1,0 +1,260 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v0.1.0)"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build all versions
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.compute.outputs.tag }}
+      version: ${{ steps.compute.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21 (toolchain target for 1.21.x)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up JDK 25 (toolchain target for 26.1.x; daemon runs on it too)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build every Minecraft target
+        run: ./gradlew chiseledBuild --stacktrace
+
+      - name: Run all tests (fan-out across every version)
+        run: ./gradlew chiseledTest --stacktrace
+
+      - name: Compute tag
+        id: compute
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            tag="${{ github.event.inputs.tag }}"
+          else
+            tag="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          # Platform version numbers drop the leading "v" (e.g. v0.2.0 -> 0.2.0).
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Collect release artifacts
+        run: |
+          mkdir -p release
+          find versions -type f -name "minecraft-fabric-mcp-*.jar" \
+            ! -name "*-dev.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" \
+            -exec cp {} release/ \;
+          ls -la release/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-jars
+          path: release/
+
+  github-release:
+    name: Publish to GitHub Releases
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: release-jars
+          path: release/
+
+      - name: Extract changelog entry
+        id: changelog
+        run: |
+          tag="${{ needs.build.outputs.tag }}"
+          version="${tag#v}"
+          # Pull the section between '## [<version>]' and the next '## ['.
+          # Use a literal prefix match (index), not a regex — the version header
+          # contains '[' / '.' which are regex metacharacters.
+          notes=$(awk -v v="## [$version]" '
+            index($0, v) == 1 {flag=1; next}
+            flag && /^## \[/ {exit}
+            flag {print}
+          ' CHANGELOG.md)
+          {
+            echo "notes<<__EOF__"
+            echo "$notes"
+            echo "__EOF__"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create / update GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ needs.build.outputs.tag }}
+          name: ${{ needs.build.outputs.tag }}
+          body: ${{ steps.changelog.outputs.notes }}
+          draft: false
+          prerelease: ${{ contains(needs.build.outputs.tag, '-rc') || contains(needs.build.outputs.tag, '-alpha') || contains(needs.build.outputs.tag, '-beta') }}
+          files: release/*.jar
+
+  # ----------------------------------------------------------------------
+  # Modrinth + CurseForge publication.
+  #
+  # The mod ships one jar per Minecraft version, so each jar is published as
+  # its own platform version (matrix over MC version) with the correct game
+  # version and a unique version number (`<modver>+<mcver>`). Kir-Antipov/mc-publish
+  # pushes to both platforms in one step and resolves the fabric-api dependency.
+  #
+  # Required repository secrets (Settings → Secrets and variables → Actions):
+  #   • MODRINTH_TOKEN   — Modrinth PAT with write scope
+  #   • CURSEFORGE_TOKEN — CurseForge API token
+  # The Modrinth project id (YCz65sD6, slug fabric-api-mcp-server) and the numeric
+  # CurseForge project id (1550191) are set inline below. mc-publish skips any
+  # platform whose token is empty, so this is safe to run even before both are
+  # provisioned.
+  # ----------------------------------------------------------------------
+  publish-mods:
+    name: Publish to Modrinth & CurseForge (MC ${{ matrix.mc }})
+    needs: [build, github-release]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mc: ["1.21.11", "26.1.1", "26.1.2", "26.2"]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: release-jars
+          path: release/
+
+      - name: Publish MC ${{ matrix.mc }}
+        # Pinned to an exact release, and to the project's current owner. The repo was renamed
+        # from Kir-Antipov to Kira-NT (the old path still 301s, but do not rely on that), and
+        # v3, v3.3 and v3.3.1 all point at the same commit — so the previous floating "@v3.3"
+        # silently moved to v3.3.1 and changed the action runtime from node16 to node24. Pin
+        # explicitly so that kind of jump is a deliberate edit rather than a surprise.
+        uses: Kira-NT/mc-publish@v3.3.1
+        with:
+          # Modrinth — permanent project id (survives slug renames; slug is fabric-api-mcp-server).
+          modrinth-id: YCz65sD6
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          # CurseForge — numeric project id (from the project page sidebar).
+          curseforge-id: "1550191"
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          # One jar for this Minecraft version, published as a distinct version.
+          files: release/minecraft-fabric-mcp-*+${{ matrix.mc }}.jar
+          name: "Minecraft Java MCP Server ${{ needs.build.outputs.tag }} (MC ${{ matrix.mc }})"
+          version: "${{ needs.build.outputs.version }}+${{ matrix.mc }}"
+          version-type: ${{ contains(needs.build.outputs.tag, '-') && 'beta' || 'release' }}
+          loaders: fabric
+          # Modrinth uses just the MC version. The per-version "environment"
+          # (client/server side) is NOT part of the v2 upload mc-publish uses,
+          # so it is patched in via the v3 API in the step below.
+          game-versions: ${{ matrix.mc }}
+          # CurseForge environment (the Client / Server tags that used to be set by hand in the
+          # file console after every release). mc-publish v3.3.1 added this; CurseForge began
+          # REQUIRING an environment on Java uploads from 2026-07-15, enforced on the upload API,
+          # which is what prompted that release.
+          #
+          # "both" is LoaderEnvironmentType.BOTH, which maps to [Client, Server]. Deliberately the
+          # PLATFORM-SCOPED input, not the generic `environment`: the generic one would also reach
+          # Modrinth and send client_and_server ("required on both sides"), which is NOT the
+          # client_or_server ("runs on either") the step below sets. Scoping it leaves the Modrinth
+          # path alone.
+          #
+          # This does NOT revive the curseforge-game-versions approach warned about below. It is a
+          # separate field, resolved independently of the Minecraft game-version provider, so it
+          # cannot empty the game-version set the way that did.
+          curseforge-environment: both
+          dependencies: |
+            fabric-api(required)
+          retry-attempts: 2
+
+      # ------------------------------------------------------------------
+      # Modrinth per-version environment (client/server side).
+      #
+      # As of Modrinth's 2026 environment-metadata overhaul this lives on the
+      # Version, not the Project, and is only exposed by the experimental v3
+      # API — mc-publish publishes via v2 and cannot set it. So we PATCH it
+      # ourselves: resolve the version we just uploaded by its version_number,
+      # set environment, then read it back to confirm it stuck.
+      #
+      # "client_or_server" = "Works the same on either side" (legacy: client
+      # Optional / server Optional).
+      #
+      # KEEP THIS STEP even though mc-publish v3.3.1 now sends an environment to
+      # Modrinth too. It still publishes over the Modrinth v2 API, and its enum
+      # maps a both-sides mod to client_and_server ("required on both sides"),
+      # which is not the same claim as client_or_server ("runs on either"). This
+      # PATCH runs after the upload and wins, so it remains the thing that
+      # decides the published value.
+      #
+      # The CurseForge side is no longer manual -- see curseforge-environment on
+      # the publish step above. Do NOT, however, re-add
+      # curseforge-game-versions: [mc, Client, Server]: mc-publish resolves that
+      # input strictly as Minecraft versions (through its game-version provider),
+      # so non-MC tags like Client/Server are dropped -- which returned an EMPTY
+      # game-version set and aborted the whole publish (the v0.4.0 regression).
+      # curseforge-environment is a different field resolved independently of
+      # that provider, which is why it is safe where the other was not.
+      # CurseForge still has no post-upload API to edit a file's game versions;
+      # the environment has to be right at upload time.
+      #
+      # Skips cleanly when MODRINTH_TOKEN is unset (matches mc-publish's own
+      # behaviour), so it is safe to keep before the token is provisioned.
+      # NOTE: rides the experimental v3 API — if the verify step starts
+      # failing, check whether Modrinth changed the field/endpoint.
+      # ------------------------------------------------------------------
+      - name: Set Modrinth environment (experimental v3 API)
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_PROJECT: YCz65sD6
+          VERSION_NUMBER: "${{ needs.build.outputs.version }}+${{ matrix.mc }}"
+          ENVIRONMENT: client_or_server
+        run: |
+          set -euo pipefail
+          if [ -z "${MODRINTH_TOKEN:-}" ]; then
+            echo "MODRINTH_TOKEN not set; skipping environment patch."
+            exit 0
+          fi
+          vid=$(curl -fsS -H "Authorization: ${MODRINTH_TOKEN}" \
+            "https://api.modrinth.com/v3/project/${MODRINTH_PROJECT}/version" \
+            | jq -r --arg vn "$VERSION_NUMBER" '.[] | select(.version_number == $vn) | .id' | head -1)
+          if [ -z "$vid" ]; then
+            echo "::error::Could not resolve Modrinth version id for ${VERSION_NUMBER} — was the upload skipped?"
+            exit 1
+          fi
+          echo "Patching environment=${ENVIRONMENT} on Modrinth version ${vid} (${VERSION_NUMBER})"
+          curl -fsS -X PATCH \
+            -H "Authorization: ${MODRINTH_TOKEN}" -H "Content-Type: application/json" \
+            -d "{\"environment\":\"${ENVIRONMENT}\"}" \
+            "https://api.modrinth.com/v3/version/${vid}"
+          actual=$(curl -fsS -H "Authorization: ${MODRINTH_TOKEN}" \
+            "https://api.modrinth.com/v3/version/${vid}" | jq -r '.environment // ""')
+          if [ "$actual" != "${ENVIRONMENT}" ]; then
+            echo "::error::Environment did not stick (expected ${ENVIRONMENT}, got '${actual}')."
+            exit 1
+          fi
+          echo "Confirmed environment=${actual} on ${VERSION_NUMBER}."

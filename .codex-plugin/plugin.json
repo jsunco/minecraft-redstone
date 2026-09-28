@@ -1,7 +1,7 @@
 {
   "name": "minecraft-redstone",
-  "version": "0.1.0+codex.20260927233317",
-  "description": "Connect Codex to a local Minecraft Java world for building, inspecting and testing vanilla redstone.",
+  "version": "0.2.0+codex.20260927235902",
+  "description": "Build and debug vanilla redstone with compact game data, backed-up construction plans and tick traces.",
   "author": {
     "name": "Local developer"
   },
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Minecraft Redstone",
     "shortDescription": "Build and inspect Minecraft with Codex.",
-    "longDescription": "Local Minecraft world/player/inventory access plus optional compact telemetry: cache snapshots, send only changed fields, and request reduced screenshots explicitly. Requires a compatible game-side Fabric bridge. Independent observer still needs implementation. The personal telemetry runner requires local Node.js.",
+    "longDescription": "Minecraft Java26.3 bridge fork with compact structured observation, inventory views, construction previews/backups/undo, named buses and finite tick recordings. Separate spectator-client control preserves user input. Runtime acceptance and a separate rendered observer still require game setup. Local Node.js22+ and Java25 required.",
     "developerName": "Local developer",
     "category": "Productivity",
     "capabilities": [
