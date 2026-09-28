@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-09-28T01:04:52.196Z",
+  "world_native": {
+    "tools": 126,
+    "json_bytes": 93572
+  },
+  "client_native": {
+    "tools": 6,
+    "json_bytes": 3882
+  },
+  "compact": {
+    "tools": 18,
+    "json_bytes": 19252
+  },
+  "note": "Serialized tool definitions for this configured installation, not model tokens. Compact surface intentionally curates capabilities; native tools remain available through local adapter discovery."
+}
