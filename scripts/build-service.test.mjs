@@ -13,7 +13,7 @@ const state = (id, properties = {}) => ({id: `minecraft:${id}`, properties});
 const key = p => `${p.x},${p.y},${p.z}`;
 function* cells(b) { for (let x = b.from.x; x <= b.to.x; x++) for (let y = b.from.y; y <= b.to.y; y++) for (let z = b.from.z; z <= b.to.z; z++) yield {x, y, z}; }
 class FakeBridge {
-  constructor() { this.calls = []; this.world = new Map(); this.saved = new Map(); this.session = 'session-a'; this.setCount = 0; }
+  constructor() { this.calls = []; this.world = new Map(); this.saved = new Map(); this.session = 'session-a'; this.setCount = 0; this.tick = 1; }
   at(p) { return structuredClone(this.world.get(key(p)) ?? state('air')); }
   put(p, value) { this.world.set(key(p), structuredClone(value)); }
   async call(source, tool, args) {
@@ -22,9 +22,10 @@ class FakeBridge {
     if (override) return override;
     switch (tool) {
       case 'server_get_status': return response(this.session ? {session_id: this.session} : {version: 'test'});
-      case 'block_scan_region': {
-        const rows = [...cells(args.box)].map(position => ({position, state: this.at(position)}));
-        return response(this.scanTransform ? this.scanTransform(rows) : rows.slice(0, args.limit));
+      case 'block_get_states_batch': {
+        const rows = args.positions.map((position, index) => ({index, position, status: 'loaded', ...this.at(position)}));
+        return response({atomic: true, phase: 'server_task', dimension: args.dimension, session_id: this.session ?? 'native-session',
+          server_tick: this.tick++, states: this.scanTransform ? this.scanTransform(rows) : rows});
       }
       case 'structure_save_from_world':
         this.saved.set(args.name, {box: structuredClone(args.box), states: [...cells(args.box)].map(p => [p, this.at(p)])});
@@ -75,8 +76,8 @@ test('registration is local; planning and preview read without saving structures
   const made = await plan(service); assert.equal(made.session_bound, true);
   const preview = decoded(await service.preview({plan_id: 'test'}));
   assert.equal(preview.baseline_changed, false); assert.equal(preview.operations.length, 1);
-  assert.ok(bridge.calls.every(c => ['server_get_status', 'block_scan_region'].includes(c.tool)));
-  assert.equal(bridge.calls.find(c => c.tool === 'block_scan_region').args.limit, 8);
+  assert.ok(bridge.calls.every(c => ['server_get_status', 'block_get_states_batch'].includes(c.tool)));
+  assert.equal(bridge.calls.find(c => c.tool === 'block_get_states_batch').args.positions.length, 8);
 });
 
 test('identical region registration is idempotent; changing an existing region is refused', async () => {
@@ -143,6 +144,58 @@ test('incomplete and duplicate scan coverage fail before any mutation', async ()
   await assert.rejects(plan(service), /Incomplete/);
   bridge.scanTransform = rows => rows.map((r, i) => i === 0 ? rows[1] : r);
   await assert.rejects(plan(service), /duplicate/); assert.equal(writes(bridge).length, 0);
+});
+
+test('native scans cover a full 4096-block region with eight bounded batches including air', async () => {
+  const {service, bridge} = await setup();
+  const region = {id: 'large', dimension: 'minecraft:overworld', box: {from: pos(0, 64, 0), to: pos(15, 79, 15)}};
+  const result = await service.scan(region, bridge.session);
+  assert.equal(result.size, 4096);
+  const reads = bridge.calls.filter(call => call.tool === 'block_get_states_batch');
+  assert.equal(reads.length, 8); assert.ok(reads.every(call => call.args.positions.length === 512 && call.args.properties.length === 0));
+  assert.equal(new Set(reads.flatMap(call => call.args.positions.map(key))).size, 4096);
+  assert.equal(bridge.calls.some(call => call.tool === 'block_scan_region'), false);
+});
+
+test('native scan rejects unavailable blocks and malformed metadata or rows before writes', async () => {
+  for (const mutate of [
+    reply => { reply.atomic = false; }, reply => { reply.phase = 'wrong'; }, reply => { reply.dimension = 'minecraft:the_end'; },
+    reply => { reply.server_tick = -1; }, reply => { reply.session_id = ''; }, reply => { reply.states[0].status = 'unloaded'; },
+    reply => { reply.states[0].index = 99; }, reply => { delete reply.states[0].properties; },
+    reply => { reply.states[0].properties = {powered: false}; },
+  ]) {
+    const {service, bridge} = await setup();
+    bridge.intercept = async (tool, args) => {
+      if (tool !== 'block_get_states_batch') return;
+      const value = {atomic: true, phase: 'server_task', dimension: args.dimension, session_id: bridge.session, server_tick: 1,
+        states: args.positions.map((position, index) => ({index, position, status: 'loaded', ...state('air')}))};
+      mutate(value); return response(value);
+    };
+    await assert.rejects(plan(service)); assert.equal(writes(bridge).length, 0); assert.equal(bridge.saved.size, 0);
+  }
+});
+
+test('chunk scans reject session changes and tick regressions without producing a mixed baseline', async () => {
+  for (const change of ['session', 'tick']) {
+    const {service, bridge} = await setup(); let reads = 0;
+    bridge.intercept = async tool => {
+      if (tool === 'block_get_states_batch' && ++reads === 2) {
+        if (change === 'session') bridge.session = 'another-world'; else bridge.tick = 0;
+      }
+    };
+    await assert.rejects(service.scan({dimension: 'minecraft:overworld', box: box(0, 512)}, 'session-a'), /session changed|regressed/);
+    assert.equal(writes(bridge).length, 0);
+  }
+  const {service, bridge} = await setup();
+  bridge.intercept = async tool => { if (tool === 'block_get_states_batch') bridge.session = 'between-identity-and-scan'; };
+  await assert.rejects(plan(service), /session changed/); assert.equal(service.plans.size, 0);
+});
+
+test('native TOON scalar-first rows retain nested positions and properties through region scanning', async () => {
+  const {service, bridge} = await setup();
+  bridge.intercept = async tool => tool === 'block_get_states_batch' ? response('session_id: session-a\nserver_tick: 1\ndimension: "minecraft:overworld"\natomic: true\nphase: server_task\nstates[1]:\n  - index: 0\n    position:\n      x: 0\n      y: 64\n      z: 0\n    status: loaded\n    id: "minecraft:grass_block"\n    properties:\n      snowy: "false"') : undefined;
+  const states = await service.scan({dimension: 'minecraft:overworld', box: box(0, 0)}, bridge.session);
+  assert.deepEqual(states.get('0,64,0'), state('grass_block', {snowy: 'false'}));
 });
 
 test('unknown pre-existing blocks cannot be captured for later unsafe restoration', async () => {

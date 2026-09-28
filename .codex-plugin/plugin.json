@@ -1,6 +1,6 @@
 {
   "name": "minecraft-redstone",
-  "version": "0.2.0+codex.20260928001652",
+  "version": "0.2.0+codex.20260928005953",
   "description": "Build and debug vanilla redstone with compact game data, backed-up construction plans and tick traces.",
   "author": {
     "name": "Local developer"
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Minecraft Redstone",
     "shortDescription": "Build and inspect Minecraft with Codex.",
-    "longDescription": "Minecraft Java26.3 bridge fork with compact structured observation, inventory views, construction previews/backups/undo, named buses and finite tick recordings. Separate spectator-client control preserves user input. Runtime acceptance and a separate rendered observer still require game setup. Local Node.js22+ and Java25 required.",
+    "longDescription": "Minecraft Java 26.3 bridge with compact structured observation, inventory views, backed-up construction, named buses, tick recordings and bounded local test jobs through MCP or CLI. Basic live redstone tests verified. Separate spectator control requires another rendered client. Local Node.js 22+ and Java 25 required.",
     "developerName": "Local developer",
     "category": "Productivity",
     "capabilities": [

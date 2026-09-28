@@ -67,8 +67,15 @@ a fresh plan.
   inventory/container writes, and player/entity changes are not exposed. Unknown
   existing blocks in the registered region cause planning to stop rather than
   risking their data during restoration.
-- One bounded `block_scan_region` retrieves every coordinate, including air,
-  using `limit = region volume`. Exact coverage is checked. Full readings remain
+- Native `block_get_states_batch` reads every coordinate, including air, in
+  batches of at most 512 positions (at most eight calls for a full region).
+  Every row must be loaded and match its requested index/position. Dimension,
+  session identity, and nondecreasing server ticks are checked across batches;
+  scans for an existing plan must match its saved session. Each batch is atomic,
+  but a larger region spans multiple server tasks and is not an atomic snapshot.
+  This also avoids a discovered upstream `block_scan_region` TOON encoding defect
+  where a first nested field loses coordinate indentation; malformed replies are
+  never repaired by guessing. Exact coverage is checked. Full readings remain
   internal; callers receive counts, fingerprints, up to 16 materials/preview
   operations, and up to 8 mismatch examples. Additional list truncation keeps
   text within 12,000 bytes and reports omitted counts. Raw scans are not model output.
@@ -120,9 +127,10 @@ snapshot references blindly.
 
 All writes require a `session_id` from `server_get_status`, supplied by the local
 bridge extension. A plan created without that identity can be inspected but
-cannot be applied. A changed session refuses apply/undo; create a fresh plan and
-handle old-world snapshot recovery explicitly. An upstream bridge lacking this
-extension remains usable for read-only plan inspection.
+cannot be applied. A changed session refuses apply/undo and bound-plan scans;
+create a fresh plan and handle old-world snapshot recovery explicitly. Region
+reads require the native batch extension and its session/tick metadata; an
+older bridge lacking it must be updated before inspecting live plans.
 
 ## Limits of restoration
 
@@ -139,13 +147,13 @@ behavioral or timing equivalence. Keep world backups for important builds.
 
 Argument names and acknowledgements come from the pinned vendored upstream:
 
+- `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/redstone/RedstoneTools.java`
+  and `NativeTelemetry.java` (`block_get_states_batch`, loaded-state/session/tick metadata).
 - `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/tools/block/BlockTools.java`
-  (`block_get_state`, `block_scan_region`, `block_set_state`, `block_fill_region`,
+  (`block_get_state`, `block_set_state`, `block_fill_region`,
   `block_fill_batch`, `block_clone_region`).
 - `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/tools/structure/StructureTools.java`
   (`structure_save_from_world`, `structure_get_info`, `structure_load_to_world`).
-- `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/adapter/impl/BlockOps.java`
-  confirms unfiltered scans include air and return IDs/properties.
 
 `node --test scripts/build-service.test.mjs` uses a fake bridge to exercise stale
 plans, incomplete scans, snapshots, failures midway through operations, rollback,

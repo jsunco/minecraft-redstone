@@ -4,16 +4,16 @@ The user requires inventories, player/world state and an assistant viewpoint/mov
 
 ## Current implementation versus runtime evidence
 
-| Capability | Implemented path | Runtime acceptance still needed |
+| Capability | Implemented path | Observed runtime coverage / remaining checks |
 |---|---|---|
-| Player state | `client_status` includes player UUID; `player_get_info` exposes mode/pose/health | Compare live user identity and position |
-| Inventory | `player_get_inventory_views` batches 36 main slots, 27 Ender Chest slots, and named equipment; generic container reads are retained | Compare populated/empty slots and storage blocks/entities; metadata availability |
-| Exact blocks | Native batches of up to 512 positions in the same server task, with session/tick and explicit availability | Compare known power/lit properties and unloaded positions |
-| Construction | Bounded plans, preview, disk backup, batch/fill/clone, readback, conflict-aware undo | Place/undo in an empty test lab and confirm preservation |
-| Timing | End-of-server-tick recorder with finite duration, sequence cursors, bounded buffer and explicit gap recovery | Observe actual off/on/off pulses, pause/reconnect behavior |
+| Player state | `client_status` includes player UUID; `player_get_info` exposes mode/pose/health | Live identity/position read succeeded; broader pose cases remain |
+| Inventory | `player_get_inventory_views` batches 36 main slots, 27 Ender Chest slots, and named equipment; generic container reads are retained | Live 36 main / 27 Ender / 8 equipment slots read; populated containers/entities remain |
+| Exact blocks | Native batches of up to 512 positions in the same server task, with session/tick and explicit availability | Loaded power/lit properties matched OR truth-table expectations; unloaded positions remain |
+| Construction | Bounded plans, preview, disk backup, batch/fill/clone, readback, conflict-aware undo | Preview/backup/apply/readback succeeded in a new lab; whole-structure undo remains |
+| Timing | End-of-server-tick recorder with finite duration, sequence cursors, bounded buffer and explicit gap recovery | Real off/on/off and finite traces verified; paused ticks abort safely; reconnect remains |
 | Observer | Controller for distinct spectator client, validated UUID/mode/pose and reduced screenshots | Separate authenticated rendered client required; two viewpoints not yet tested |
 
-The 26.3 Java sources compile and automated tests exercise game/protocol contracts with controlled fixtures. There has been no completed live-world acceptance run. Compiled artifacts and staged installation files alone do not establish working runtime behavior. The remaining setup step is to publish the new launcher profile after all Minecraft Launcher instances are closed; see [setup](MINECRAFT_SETUP.md).
+The 26.3 bridge is running in a separate test world. Basic runtime acceptance is recorded in [VERIFICATION.md](VERIFICATION.md); automated tests cover additional failure paths with controlled fixtures. A successful small circuit does not establish every capability in this table or completion of the GPU.
 
 ## Independent observer constraints
 

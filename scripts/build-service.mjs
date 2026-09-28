@@ -188,15 +188,33 @@ export class BuildService {
     if (!current || !plan.session_id) throw new Error('World session identity unavailable. Use the bridge with server_get_status.session_id, then create a fresh plan; writes are disabled until bound.');
     if (current !== plan.session_id) throw new Error('World session changed. Create a fresh plan in this world; the old snapshot is retained for explicit recovery.');
   }
-  async scan(region) {
-    const values = parseReading(await this.bridge.call('world', 'block_scan_region', {dimension: region.dimension, box: region.box, limit: volume(region.box)}));
-    if (!Array.isArray(values) || values.length !== volume(region.box)) throw new Error('Incomplete region scan; expected every block including air');
-    const states = new Map();
-    for (const row of values) {
-      const p = position.parse(row.position);
-      if (!inside(p, region.box) || states.has(key(p))) throw new Error('Region scan has duplicate or out-of-bounds coordinates');
-      const state = block.parse({id: row.state?.id, properties: row.state?.properties ?? {}});
-      states.set(key(p), state);
+  async scan(region, expectedSession = null) {
+    const requested = [...positions(bounded(region.box))], states = new Map();
+    let session = expectedSession, lastTick = -1;
+    // Native batches preserve the nested coordinate shape that the upstream
+    // region-list TOON encoder currently loses. Never guess flattened fields.
+    // Each batch is atomic; a region larger than 512 blocks spans server tasks.
+    for (let offset = 0; offset < requested.length; offset += 512) {
+      const points = requested.slice(offset, offset + 512);
+      const reading = parseReading(await this.bridge.call('world', 'block_get_states_batch', {
+        dimension: region.dimension, positions: points, properties: [],
+      }));
+      if (reading.atomic !== true || reading.phase !== 'server_task' || reading.dimension !== region.dimension ||
+          typeof reading.session_id !== 'string' || !reading.session_id || reading.session_id.length > 200 ||
+          !Number.isSafeInteger(reading.server_tick) || reading.server_tick < 0 || reading.server_tick < lastTick) {
+        throw new Error('Invalid native region scan metadata or regressed server tick');
+      }
+      if (session && reading.session_id !== session) throw new Error('World session changed during region scan');
+      session = reading.session_id; lastTick = reading.server_tick;
+      if (!Array.isArray(reading.states) || reading.states.length !== points.length) throw new Error('Incomplete region scan; expected every block including air');
+      for (let index = 0; index < reading.states.length; index++) {
+        const row = reading.states[index], p = position.parse(row.position);
+        if (row.index !== index || key(p) !== key(points[index]) || !inside(p, region.box) || states.has(key(p))) throw new Error('Region scan has duplicate, reordered or out-of-bounds coordinates');
+        if (row.status !== 'loaded') throw new Error('Region scan contains unloaded or unavailable blocks; no chunks were loaded');
+        if (!row.properties || typeof row.properties !== 'object' || Array.isArray(row.properties)) throw new Error('Region scan is missing block-state properties');
+        const state = block.parse({id: row.id, properties: row.properties});
+        states.set(key(p), state);
+      }
     }
     return states;
   }
@@ -234,7 +252,7 @@ export class BuildService {
     const operations = normalizedOperations(region, parsed.operations);
     const total = operations.reduce((n, op) => n + volume(operationBox(op)), 0);
     if (total > BUILD_LIMITS.blocks) throw new Error('Total operation volume exceeds 4096 blocks, including repeated writes');
-    const session_id = await this.identity(); const before = await this.scan(region);
+    const session_id = await this.identity(); const before = await this.scan(region, session_id);
     // A snapshot can restore only the admitted lab palette. Refuse unknown/unsafe
     // pre-existing blocks instead of deleting their NBT or restoring explosives.
     for (const state of before.values()) allowed(state);
@@ -248,7 +266,7 @@ export class BuildService {
       ...(!session_id ? {limitation: 'Session identity missing; inspect plans freely, but apply requires a fresh plan bound to the updated bridge.'} : {})});
   }); }
   preview(input) { return this.run(async () => {
-    const plan = this.plan(input); const current = await this.scan(plan.region); const current_fingerprint = fingerprint(current);
+    const plan = this.plan(input); const current = await this.scan(plan.region, plan.session_id); const current_fingerprint = fingerprint(current);
     return text({...this.describe(plan), current_fingerprint, baseline_changed: current_fingerprint !== plan.before_fingerprint,
       current: summary(current), expected: summary(new Map(plan.expected)), operations: plan.operations.slice(0, 16), omitted_operations: Math.max(0, plan.operations.length - 16),
       world_modified: false, note: 'Preview does not refresh the baseline or authorize an overwrite. Create a fresh plan if this region changed.'});
@@ -293,11 +311,11 @@ export class BuildService {
     const plan = this.plan(input);
     if (plan.status !== 'planned') throw new Error(`Plan is ${plan.status}; an apply is never replayed`);
     await this.checkIdentity(plan);
-    const before = await this.scan(plan.region);
+    const before = await this.scan(plan.region, plan.session_id);
     if (fingerprint(before) !== plan.before_fingerprint) throw new Error('Build region changed after planning; create a fresh plan before applying');
     await this.save(plan);
     await this.checkIdentity(plan);
-    if (fingerprint(await this.scan(plan.region)) !== plan.before_fingerprint) throw new Error('Build region changed while saving its snapshot; no block operation was started');
+    if (fingerprint(await this.scan(plan.region, plan.session_id)) !== plan.before_fingerprint) throw new Error('Build region changed while saving its snapshot; no block operation was started');
     plan.status = 'applying'; plan.completed_operations = 0; this.persist();
     const candidates = new Map([...before].map(([at, state]) => [at, [state]]));
     let evolving = before;
@@ -311,7 +329,7 @@ export class BuildService {
         await this.executeGroup(plan.region, group);
         plan.completed_operations += group.length; this.persist();
       }
-      const after = await this.scan(plan.region); plan.after_fingerprint = fingerprint(after);
+      const after = await this.scan(plan.region, plan.session_id); plan.after_fingerprint = fingerprint(after);
       const verification = compare(after, new Map(plan.expected));
       plan.status = verification.matches ? 'applied' : 'applied_unverified'; plan.verification = verification; this.persist();
       return text({...this.describe(plan), completed_operations: plan.completed_operations, verification, observed: summary(after),
@@ -321,16 +339,16 @@ export class BuildService {
       let rollback;
       try {
         await this.checkIdentity(plan);
-        const current = await this.scan(plan.region); const current_fingerprint = fingerprint(current);
+        const current = await this.scan(plan.region, plan.session_id); const current_fingerprint = fingerprint(current);
         plan.after_fingerprint = current_fingerprint;
         const unexpected = [...current].filter(([at, state]) => !candidates.get(at).some(candidate => matches(state, candidate)));
         if (unexpected.length) {
           plan.undo_requires_fingerprint = true;
           rollback = {status: 'conflict', unexpected_blocks: unexpected.length, note: 'Unexpected edits or dynamic state changes; no automatic restore attempted. Inspect, then undo using the exact current fingerprint if restoration is intended.'};
         } else {
-          if (fingerprint(await this.scan(plan.region)) !== current_fingerprint) throw new Error('World changed during rollback check');
+          if (fingerprint(await this.scan(plan.region, plan.session_id)) !== current_fingerprint) throw new Error('World changed during rollback check');
           plan.status = 'rolling_back'; this.persist(); await this.restore(plan);
-          const restored = await this.scan(plan.region); const verified = fingerprint(restored) === plan.before_fingerprint;
+          const restored = await this.scan(plan.region, plan.session_id); const verified = fingerprint(restored) === plan.before_fingerprint;
           plan.after_fingerprint = fingerprint(restored); plan.status = verified ? 'rolled_back' : 'rollback_unverified';
           rollback = {status: plan.status, verified};
         }
@@ -341,7 +359,7 @@ export class BuildService {
   }); }
   verify(input) { return this.run(async () => {
     const plan = this.plan(input); await this.checkIdentity(plan);
-    const current = await this.scan(plan.region); const current_fingerprint = fingerprint(current);
+    const current = await this.scan(plan.region, plan.session_id); const current_fingerprint = fingerprint(current);
     const expected = new Map(['undone', 'rolled_back'].includes(plan.status) ? plan.before : plan.expected);
     return text({...this.describe(plan), current_fingerprint, changed_since_last_observation: plan.after_fingerprint ? current_fingerprint !== plan.after_fingerprint : null,
       verification: compare(current, expected), observed: summary(current), note: 'Verification does not change the undo baseline. Simulation dynamics may change block properties.'});
@@ -350,7 +368,7 @@ export class BuildService {
     const parsed = buildUndoSchema.parse(input); const plan = this.plan({plan_id: parsed.plan_id});
     if (!plan.snapshot || !['applied', 'applied_unverified', 'partial', 'interrupted', 'rollback_unverified', 'undo_unverified'].includes(plan.status)) throw new Error('This plan has no applied snapshot eligible for undo');
     await this.checkIdentity(plan);
-    const current = await this.scan(plan.region); const current_fingerprint = fingerprint(current);
+    const current = await this.scan(plan.region, plan.session_id); const current_fingerprint = fingerprint(current);
     const expected = parsed.expected_fingerprint ?? (plan.undo_requires_fingerprint ? null : plan.after_fingerprint);
     if (!expected || current_fingerprint !== expected) return text({...this.describe(plan), status: 'undo_conflict', current_fingerprint, expected_fingerprint: expected ?? null,
       world_modified: false, note: 'Inspect the region. To intentionally restore this snapshot over these observed changes, pass this exact current_fingerprint as expected_fingerprint.'});
@@ -358,13 +376,13 @@ export class BuildService {
     plan.status = 'undoing'; this.persist();
     try {
       await this.restore(plan);
-      const after = await this.scan(plan.region); plan.after_fingerprint = fingerprint(after);
+      const after = await this.scan(plan.region, plan.session_id); plan.after_fingerprint = fingerprint(after);
       const verified = plan.after_fingerprint === plan.before_fingerprint;
       plan.status = verified ? 'undone' : 'undo_unverified'; this.persist();
       return text({...this.describe(plan), restored: verified, verification: compare(after, new Map(plan.before))});
     } catch (error) {
       plan.status = 'partial'; plan.undo_requires_fingerprint = true; plan.error = `Undo failed: ${brief(error)}`;
-      try { plan.after_fingerprint = fingerprint(await this.scan(plan.region)); } catch { plan.after_fingerprint = null; }
+      try { plan.after_fingerprint = fingerprint(await this.scan(plan.region, plan.session_id)); } catch { plan.after_fingerprint = null; }
       this.persist(); return {isError: true, ...text(this.describe(plan))};
     }
   }); }

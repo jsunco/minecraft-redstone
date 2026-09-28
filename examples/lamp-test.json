@@ -1,0 +1,16 @@
+{
+  "circuit_id": "lamp",
+  "inputs": [
+    {"name": "switch", "position": {"x": 0, "y": 64, "z": 0}}
+  ],
+  "cases": [
+    {"name": "off", "inputs": {"switch": false}, "expect": {"light": 0}},
+    {"name": "on", "inputs": {"switch": true}, "expect": {"light": 1}},
+    {"name": "off_again", "inputs": {"switch": false}, "expect": {"light": 0}}
+  ],
+  "settle_ticks": 8,
+  "timeout_ms": 15000,
+  "stop_on_failure": true,
+  "restore_inputs": true,
+  "trace": false
+}
