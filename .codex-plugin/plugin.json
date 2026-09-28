@@ -1,9 +1,9 @@
 {
   "name": "minecraft-redstone",
-  "version": "0.2.0+codex.20260928005953",
+  "version": "0.2.0+codex.20260928020758",
   "description": "Build and debug vanilla redstone with compact game data, backed-up construction plans and tick traces.",
   "author": {
-    "name": "Local developer"
+    "name": "jsunco"
   },
   "keywords": [
     "minecraft",
@@ -17,8 +17,8 @@
   "interface": {
     "displayName": "Minecraft Redstone",
     "shortDescription": "Build and inspect Minecraft with Codex.",
-    "longDescription": "Minecraft Java 26.3 bridge with compact structured observation, inventory views, backed-up construction, named buses, tick recordings and bounded local test jobs through MCP or CLI. Basic live redstone tests verified. Separate spectator control requires another rendered client. Local Node.js 22+ and Java 25 required.",
-    "developerName": "Local developer",
+    "longDescription": "Minecraft Java 26.3 bridge with compact structured observation, inventory views, backed-up construction, named buses, tick recordings and bounded local test jobs through MCP or CLI. Live validation includes all 256 four-bit operand pairs with carry-in zero, fault detection and one-cell undo. Separate spectator control requires another rendered client. Local Node.js 22+ and Java 25 required.",
+    "developerName": "jsunco",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
@@ -31,5 +31,5 @@
     ]
   },
   "repository": "https://github.com/jsunco/minecraft-redstone",
-  "homepage": "https://github.com/jsunco/minecraft-redstone"
+  "homepage": "https://jsun.ai/minecraft-mcp/"
 }

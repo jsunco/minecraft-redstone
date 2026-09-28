@@ -23,6 +23,6 @@ npm test
 
 then [build the fabric bridge](bridge/README.md) and follow the [setup notes](docs/MINECRAFT_SETUP.md). [test runner](docs/TEST_RUNNER.md), [architecture](docs/ARCHITECTURE.md) and [tool docs](docs/CIRCUIT_TOOLS.md) cover the rest.
 
-tested in minecraft: all 256 operand pairs passed on the four-bit adder. cancellation and input restoration are checked too. [live measurements](docs/LIVE_BENCHMARK.md) cover reads and payload size; token savings remain unmeasured. the independent camera still needs a second client.
+tested in minecraft: all 256 operand pairs passed on the four-bit adder with carry-in held low. cancellation, input restoration and one-cell undo are checked too. [live measurements](docs/LIVE_BENCHMARK.md) cover reads and payload size; token savings remain unmeasured. the independent camera still needs a second client.
 
 built on [chapmanjw's fabric mcp server](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server). its mit license and pinned source are in [bridge/](bridge/).

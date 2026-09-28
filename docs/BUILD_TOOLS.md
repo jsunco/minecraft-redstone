@@ -143,12 +143,12 @@ detection. Snapshots include block data but exclude entities. Restoring a region
 does not reverse neighbor effects or state changes outside it, and does not prove
 behavioral or timing equivalence. Keep world backups for important builds.
 
-## Upstream schema references
+## Native and upstream schema references
 
-Argument names and acknowledgements come from the pinned vendored upstream:
+Argument names and acknowledgements come from the pinned vendored upstream and this fork's native extensions:
 
 - `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/redstone/RedstoneTools.java`
-  and `NativeTelemetry.java` (`block_get_states_batch`, loaded-state/session/tick metadata).
+  and `NativeTelemetry.java` (downstream `block_get_states_batch` and loaded-state/session/tick metadata).
 - `bridge/vendor/src/main/java/com/chapmanjw/minecraft/fabric/mcp/tools/block/BlockTools.java`
   (`block_get_state`, `block_set_state`, `block_fill_region`,
   `block_fill_batch`, `block_clone_region`).

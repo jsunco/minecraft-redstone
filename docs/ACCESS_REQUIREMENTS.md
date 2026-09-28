@@ -6,14 +6,14 @@ The user requires inventories, player/world state and an assistant viewpoint/mov
 
 | Capability | Implemented path | Observed runtime coverage / remaining checks |
 |---|---|---|
-| Player state | `client_status` includes player UUID; `player_get_info` exposes mode/pose/health | Live identity/position read succeeded; broader pose cases remain |
+| Player state | `client_status` includes player UUID; `player_get_info` exposes mode/pose/health | Live identity/position reads and authorized filming pose restoration checked; broader pose cases remain |
 | Inventory | `player_get_inventory_views` batches 36 main slots, 27 Ender Chest slots, and named equipment; generic container reads are retained | Live 36 main / 27 Ender / 8 equipment slots read; populated containers/entities remain |
-| Exact blocks | Native batches of up to 512 positions in the same server task, with session/tick and explicit availability | Loaded power/lit properties matched OR truth-table expectations; unloaded positions remain |
-| Construction | Bounded plans, preview, disk backup, batch/fill/clone, readback, conflict-aware undo | Preview/backup/apply/readback succeeded in a new lab; whole-structure undo remains |
-| Timing | End-of-server-tick recorder with finite duration, sequence cursors, bounded buffer and explicit gap recovery | Real off/on/off and finite traces verified; paused ticks abort safely; reconnect remains |
+| Exact blocks | Native batches of up to 512 positions in the same server task, with session/tick and explicit availability | OR cases and all 256 four-bit adder operand pairs passed with carry-in zero; unloaded positions remain |
+| Construction | Bounded plans, preview, disk backup, batch/fill/clone, readback, conflict-aware undo | 30 backed-up adder tiles read back correctly; one-cell fault undo and arithmetic recovery passed; whole-structure undo remains |
+| Timing | End-of-server-tick recorder with finite duration, sequence cursors, bounded buffer and explicit gap recovery | OR transients and an 86-tick adder settling sequence recorded; paused ticks abort safely; reconnect remains |
 | Observer | Controller for distinct spectator client, validated UUID/mode/pose and reduced screenshots | Separate authenticated rendered client required; two viewpoints not yet tested |
 
-The 26.3 bridge is running in a separate test world. Basic runtime acceptance is recorded in [VERIFICATION.md](VERIFICATION.md); automated tests cover additional failure paths with controlled fixtures. A successful small circuit does not establish every capability in this table or completion of the GPU.
+Live checks used a separate 26.3 test world. Results are recorded in [VERIFICATION.md](VERIFICATION.md), with [arithmetic and fault-recovery evidence](ADDER_CASE_STUDY.md); automated tests cover additional failure paths with controlled fixtures. These checks do not establish every capability in this table or completion of the GPU.
 
 ## Independent observer constraints
 

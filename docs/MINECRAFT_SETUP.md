@@ -78,6 +78,11 @@ npm run configure:local -- --project "/path/to/learning-project" \
   --game-dir "$HOME/Library/Application Support/minecraft-tinygpu-lab"
 ```
 
+Use `configure:local` to generate `.mcp.json`; `.mcp.example.json` is an internal
+template, not a ready-to-use connection file. The generated default exposes only
+the compact assistant tools. Optional direct endpoints require their own local
+authorization configuration, as described below.
+
 The runner reads `config.json` for the world endpoint and `client.json` for the
 user's client. Reconfiguration retains the existing project and credential paths
 when those options are omitted, preserves unrelated MCP settings, and checks
