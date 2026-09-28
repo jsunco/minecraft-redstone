@@ -1,0 +1,775 @@
+{
+  "schema": "minecraft-redstone-timing-case-v1",
+  "experiment": "64-case OR acceptance run",
+  "experiment_started_at_utc": "2026-09-28T00:53:12.520Z",
+  "experiment_finished_at_utc": "2026-09-28T00:53:40.466Z",
+  "minecraft_version": "26.3",
+  "tick_origin": "recorder start; all ticks below are relative",
+  "initial_phase": "server_task",
+  "subsequent_phase": "end_server_tick",
+  "covered_end_tick": 557,
+  "trace_entry_count": 56,
+  "gap": false,
+  "dropped_total": 0,
+  "missed_ticks_total": 0,
+  "replay": {
+    "kind": "offline reconstruction, not live polling",
+    "period_ticks": 20,
+    "phase_tick": 0,
+    "nominal_hz_at_20_tps": 1,
+    "sample_count": 28
+  },
+  "counts": {
+    "wire_binary_transitions": 41,
+    "phase_0_sampled_wire_transitions": 15,
+    "complete_low_intervals": 20,
+    "phase_0_missed_complete_low_intervals": 13,
+    "one_tick_low_intervals": 5,
+    "phase_0_missed_one_tick_low_intervals": 5
+  },
+  "state_changes": [
+    {
+      "tick": 0,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 10,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 37,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 40,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 45,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 54,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 55,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 72,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 75,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 81,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 107,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 110,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 116,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 124,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 125,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 142,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 145,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 151,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 159,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 160,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 177,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 180,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 186,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 213,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 216,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 221,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 247,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 250,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 256,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 264,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 265,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 281,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 284,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 290,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 316,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 319,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 325,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 350,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 353,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 359,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 385,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 388,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 393,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 419,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 422,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 428,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 436,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 437,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 454,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 457,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 463,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 488,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 491,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 496,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 523,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 526,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 531,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    }
+  ],
+  "phase_0_samples": [
+    {
+      "tick": 0,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 20,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 40,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 60,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 80,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 100,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 120,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 140,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 160,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 180,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 200,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 220,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 240,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 260,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 280,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 300,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 320,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 340,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 360,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 380,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 400,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 420,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 440,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 460,
+      "wire_power": 0,
+      "wire_high": 0,
+      "lamp_lit": 0
+    },
+    {
+      "tick": 480,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 500,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 520,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    },
+    {
+      "tick": 540,
+      "wire_power": 12,
+      "wire_high": 1,
+      "lamp_lit": 1
+    }
+  ],
+  "complete_wire_low_intervals": [
+    {
+      "start": 37,
+      "end_exclusive": 45,
+      "ticks": 8,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 54,
+      "end_exclusive": 55,
+      "ticks": 1,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 72,
+      "end_exclusive": 81,
+      "ticks": 9,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 107,
+      "end_exclusive": 116,
+      "ticks": 9,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 124,
+      "end_exclusive": 125,
+      "ticks": 1,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 142,
+      "end_exclusive": 151,
+      "ticks": 9,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 159,
+      "end_exclusive": 160,
+      "ticks": 1,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 177,
+      "end_exclusive": 186,
+      "ticks": 9,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 213,
+      "end_exclusive": 221,
+      "ticks": 8,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 247,
+      "end_exclusive": 256,
+      "ticks": 9,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 264,
+      "end_exclusive": 265,
+      "ticks": 1,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 281,
+      "end_exclusive": 290,
+      "ticks": 9,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 316,
+      "end_exclusive": 325,
+      "ticks": 9,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 350,
+      "end_exclusive": 359,
+      "ticks": 9,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 385,
+      "end_exclusive": 393,
+      "ticks": 8,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 419,
+      "end_exclusive": 428,
+      "ticks": 9,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 436,
+      "end_exclusive": 437,
+      "ticks": 1,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 454,
+      "end_exclusive": 463,
+      "ticks": 9,
+      "missed_by_phase_0_replay": false
+    },
+    {
+      "start": 488,
+      "end_exclusive": 496,
+      "ticks": 8,
+      "missed_by_phase_0_replay": true
+    },
+    {
+      "start": 523,
+      "end_exclusive": 531,
+      "ticks": 8,
+      "missed_by_phase_0_replay": true
+    }
+  ],
+  "phase_sensitivity": [
+    {
+      "phase_tick": 0,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 1,
+      "missed_complete_low_intervals": 14,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 2,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 3,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 4,
+      "missed_complete_low_intervals": 11,
+      "missed_one_tick_low_intervals": 3
+    },
+    {
+      "phase_tick": 5,
+      "missed_complete_low_intervals": 14,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 6,
+      "missed_complete_low_intervals": 15,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 7,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 8,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 9,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 10,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 11,
+      "missed_complete_low_intervals": 15,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 12,
+      "missed_complete_low_intervals": 14,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 13,
+      "missed_complete_low_intervals": 14,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 14,
+      "missed_complete_low_intervals": 12,
+      "missed_one_tick_low_intervals": 4
+    },
+    {
+      "phase_tick": 15,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 16,
+      "missed_complete_low_intervals": 14,
+      "missed_one_tick_low_intervals": 4
+    },
+    {
+      "phase_tick": 17,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 18,
+      "missed_complete_low_intervals": 13,
+      "missed_one_tick_low_intervals": 5
+    },
+    {
+      "phase_tick": 19,
+      "missed_complete_low_intervals": 12,
+      "missed_one_tick_low_intervals": 4
+    }
+  ],
+  "limits": [
+    "Initial state is a server-task baseline, later transitions are end-of-tick samples.",
+    "Step reconstruction describes tick-boundary observations, not within-tick behavior.",
+    "20 ticks is one nominal second at 20 TPS, not measured wall-clock polling.",
+    "Low intervals require both falling and rising edges; boundary intervals are excluded.",
+    "No coordinates, player names, world/session identifiers or raw trace IDs are included."
+  ]
+}

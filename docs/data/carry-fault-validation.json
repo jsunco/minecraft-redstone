@@ -1,0 +1,214 @@
+{
+  "date_local": "2026-09-27",
+  "fault": "one redstone dust block removed from the first inter-slice carry connection",
+  "baseline_settle_ticks": 100,
+  "fault_run": {
+    "exit_code": 2,
+    "status": "failed",
+    "passed": 0,
+    "failed": 1,
+    "duration_ms": 5169,
+    "input_restoration": "restored",
+    "trace_complete": true,
+    "trace_gaps": 0,
+    "cases": [
+      {
+        "inputs": {
+          "cin": false,
+          "a0": true,
+          "b0": true,
+          "a1": false,
+          "b1": false,
+          "a2": false,
+          "b2": false,
+          "a3": false,
+          "b3": false
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 2,
+            "actual": 0,
+            "pass": false
+          }
+        ],
+        "pass": false,
+        "settled_ticks": 100,
+        "duration_ms": 5061
+      }
+    ]
+  },
+  "undo": {
+    "status": "undone",
+    "restored": true,
+    "verification": {
+      "matches": true,
+      "checked_blocks": 1,
+      "mismatch_count": 0,
+      "examples": []
+    }
+  },
+  "post_repair": {
+    "exit_code": 0,
+    "status": "passed",
+    "passed": 6,
+    "failed": 0,
+    "duration_ms": 30486,
+    "input_restoration": "restored",
+    "trace_complete": true,
+    "trace_gaps": 0,
+    "cases": [
+      {
+        "inputs": {
+          "cin": false,
+          "a0": false,
+          "b0": false,
+          "a1": false,
+          "b1": false,
+          "a2": false,
+          "b2": false,
+          "a3": false,
+          "b3": false
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 0,
+            "actual": 0,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5016
+      },
+      {
+        "inputs": {
+          "cin": false,
+          "a0": true,
+          "b0": true,
+          "a1": false,
+          "b1": false,
+          "a2": false,
+          "b2": false,
+          "a3": false,
+          "b3": false
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 2,
+            "actual": 2,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5061
+      },
+      {
+        "inputs": {
+          "cin": false,
+          "a0": true,
+          "b0": true,
+          "a1": false,
+          "b1": true,
+          "a2": false,
+          "b2": true,
+          "a3": false,
+          "b3": true
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 16,
+            "actual": 16,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5028
+      },
+      {
+        "inputs": {
+          "cin": false,
+          "a0": true,
+          "b0": true,
+          "a1": true,
+          "b1": false,
+          "a2": true,
+          "b2": false,
+          "a3": true,
+          "b3": false
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 16,
+            "actual": 16,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5093
+      },
+      {
+        "inputs": {
+          "cin": false,
+          "a0": true,
+          "b0": true,
+          "a1": true,
+          "b1": true,
+          "a2": true,
+          "b2": true,
+          "a3": true,
+          "b3": true
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 30,
+            "actual": 30,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5045
+      },
+      {
+        "inputs": {
+          "cin": false,
+          "a0": false,
+          "b0": false,
+          "a1": false,
+          "b1": false,
+          "a2": false,
+          "b2": false,
+          "a3": false,
+          "b3": false
+        },
+        "assertions": [
+          {
+            "name": "sum",
+            "expected": 0,
+            "actual": 0,
+            "pass": true
+          }
+        ],
+        "pass": true,
+        "settled_ticks": 100,
+        "duration_ms": 5099
+      }
+    ]
+  },
+  "final_sum": 0,
+  "final_assertion_pass": true,
+  "limitations": [
+    "One-cell snapshot undo, not whole-structure undo.",
+    "Helper active; final unmodified-Minecraft acceptance remains separate.",
+    "Restoring inputs does not rewind arbitrary downstream memory or other effects."
+  ]
+}

@@ -2,8 +2,8 @@
 
 ## Automated checks
 
-- `npm test`: **152 JavaScript tests passed**, including actual MCP SDK stdio negotiation, local HTTP authentication, runner cancellation, failure/recovery paths, cross-process coordination, strict input validation and bounded output. Most game behavior is simulated here; live checks are listed separately below.
-- Minecraft 26.3 server/client sources compile. The prior full native run passed **449 Java tests**, followed by **11/11 focused native/recorder checks**. Native runtime source and JAR are unchanged for this runner update. A previous full Gradle rerun stalled fetching dependencies; 449 is the earlier full-suite result.
+- `npm test`: **157 JavaScript tests passed**, including actual MCP SDK stdio negotiation, local HTTP authentication, runner cancellation, failure/recovery paths, cross-process coordination, strict input validation and bounded output. Most game behavior is simulated here; live checks are listed separately below.
+- Minecraft 26.3 server/client sources compile. The prior full native run passed **449 Java tests**, followed by **11/11 focused native/recorder checks**. Native runtime source and JAR are unchanged for this runner and showcase update. A previous full Gradle rerun stalled fetching dependencies; 449 is the earlier full-suite result.
 - Native JAR SHA-256: `6242e9577c1f446fa7fb83f23c52a128107913fd173e25c171d6e04e58037557`.
 - The compact MCP catalog exposes **18 tools**, including `circuit_test`. CLI and MCP use the same local job engine. Build/runner/observer mutations retain write annotations; default telemetry remains disabled.
 - Four Java TOON fixture outputs round-trip through the decoder. Live construction found another upstream encoder shape that lost nested position indentation; construction scans now use validated native block batches. Four regression tests cover real TOON decoding, full coverage and session consistency.
@@ -27,6 +27,16 @@ Tested in a new, isolated Creative Superflat world using Minecraft Java **26.3**
 
 The Minecraft circuit generated the outputs. The runner changed existing lever inputs and compared independent expectations to native wire/lamp observations. Test loops, detailed traces and low-level replies stayed local; only bounded job results need reach the assistant. These checks do not establish a completed GPU or learner mastery.
 
+## Larger arithmetic showcase
+
+A vanilla four-bit ripple-carry adder now occupies 60×73×9 blocks, with 5,943 non-air blocks. Thirty backed-up construction tiles read back 39,420 positions with no placement mismatches. The single-bit full adder passed all eight input combinations; the completed four-bit circuit passed all **256 operand pairs with carry-in zero**, split across eight jobs, in **1,521.124 seconds**. All eight jobs restored inputs and retained complete traces with zero gaps.
+
+Each case waited 100 advancing server ticks. One recorded carry transition still showed 8 at offset 64 and settled to the expected 16 at offset 86. The configured tick rate was 20 TPS; the measured suite duration includes waiting and orchestration, and is not MCP transport latency. See the [arithmetic case study and all 256 observations](ADDER_CASE_STUDY.md).
+
+The user explicitly authorized temporarily positioning their character for the native screenshot/video captures and restoring its position/view afterward. This is separate from the unverified independent spectator controller. [Media provenance](assets/README.md).
+
+A deliberate one-wire carry fault made `1+1` produce `0`; the CLI failed with exit 2 and restored inputs. Snapshot undo verified the exact block restoration, and all six repair cases passed with complete traces. Final output was zero. This checks one-cell undo, not whole-structure recovery. [Fault evidence](data/carry-fault-validation.json).
+
 ## Performance evidence
 
 The reproducible [live benchmark](LIVE_BENCHMARK.md) compares individual and batched reads, plus full and exact-delta encodings of the same samples. It measures call duration and serialized JSON bytes, **not model tokens, cost or quota**. It does not compare alternative transports or isolate MCP overhead.
@@ -42,4 +52,4 @@ The older synthetic fixture benchmark (`npm run benchmark`) produced 13,264 comp
 - Actual model-token usage, billing, end-to-end assistant speed and superiority over other transports remain unmeasured.
 - Other Minecraft versions, Linux/Windows runtime setup, upstream formatting/checkstyle tasks and GameTest execution are not established.
 
-Generated profiles, credentials, saves, recordings, private coordinates, build caches and compiled JARs remain excluded from Git. Only source, tests, reproducible procedures and aggregate evidence are published. The inherited generic-event listener retention limitation remains documented in [bridge/README.md](../bridge/README.md); compact state and native trace paths do not rely on those listeners.
+Generated profiles, credentials, saves, raw local recordings, private coordinates, build caches and compiled JARs remain excluded from Git. Source, tests, reproducible procedures, anonymous evidence and explicitly selected in-game media are published. The inherited generic-event listener retention limitation remains documented in [bridge/README.md](../bridge/README.md); compact state and native trace paths do not rely on those listeners.

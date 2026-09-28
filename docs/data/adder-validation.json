@@ -1,0 +1,3274 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-09-27",
+  "timezone": "America/Los_Angeles",
+  "environment": {
+    "edition": "Java",
+    "minecraft": "26.3",
+    "fabric_loader": "0.19.5",
+    "bridge": "1.1.0-redstone.1",
+    "configured_tick_rate_tps": 20
+  },
+  "layout": {
+    "width": 60,
+    "depth": 73,
+    "height": 9,
+    "non_air_blocks": 5943,
+    "supports": 4903,
+    "dust": 886,
+    "repeaters": 68,
+    "torches": 72,
+    "levers": 9,
+    "lamps": 5,
+    "construction_tiles": 30,
+    "positions_checked": 39420,
+    "placement_mismatches": 0
+  },
+  "prototype_cases": {
+    "xor_before_orientation_fix": {
+      "status": "failed",
+      "passed": 3,
+      "failed": 1,
+      "completed": 4,
+      "total": 4,
+      "duration_ms": 11806,
+      "restoration": "restored",
+      "trace_complete": true
+    },
+    "xor_after_fix": {
+      "status": "passed",
+      "passed": 4,
+      "failed": 0,
+      "completed": 4,
+      "total": 4,
+      "duration_ms": 11853,
+      "restoration": "restored",
+      "trace_complete": true
+    },
+    "one_bit_full_adder": {
+      "status": "passed",
+      "passed": 8,
+      "failed": 0,
+      "completed": 8,
+      "total": 8,
+      "duration_ms": 27479,
+      "restoration": "restored",
+      "trace_complete": true
+    },
+    "four_bit_smoke": {
+      "status": "passed",
+      "passed": 7,
+      "failed": 0,
+      "completed": 7,
+      "total": 7,
+      "duration_ms": 44871,
+      "restoration": "restored",
+      "trace_complete": true
+    }
+  },
+  "exhaustive": {
+    "status": "passed",
+    "cases": 256,
+    "passed": 256,
+    "failed": 0,
+    "jobs": 8,
+    "settle_ticks_per_case": 100,
+    "deadline_ms_per_job": 300000,
+    "duration_ms": 1521124,
+    "all_inputs_restored": true,
+    "all_traces_complete": true,
+    "trace_gaps": 0,
+    "max_recorded_lamp_change_offset_ticks": 86,
+    "metrics": {
+      "input_reads": 1348,
+      "input_writes": 520,
+      "circuit_observations": 5119,
+      "trace_operations": 32,
+      "response_json_bytes": 6229232,
+      "poll_sleeps": 5119
+    }
+  },
+  "timing_example": {
+    "before": {
+      "a": 1,
+      "b": 14
+    },
+    "after": {
+      "a": 1,
+      "b": 15
+    },
+    "expected": 16,
+    "anchor": "runner post-input start",
+    "method": "offline reconstruction of recorded end-of-tick changes, not a separate shorter-settling live run",
+    "bus_at_offset_64": 8,
+    "assertion_at_offset": 100,
+    "states": [
+      {
+        "offset_ticks": 0,
+        "bus": 15
+      },
+      {
+        "offset_ticks": 18,
+        "bus": 14
+      },
+      {
+        "offset_ticks": 38,
+        "bus": 12
+      },
+      {
+        "offset_ticks": 62,
+        "bus": 8
+      },
+      {
+        "offset_ticks": 82,
+        "bus": 24
+      },
+      {
+        "offset_ticks": 86,
+        "bus": 16
+      }
+    ]
+  },
+  "limitations": [
+    "Instrumented Fabric lab; eventual unmodified Minecraft computer validation remains separate.",
+    "All 256 operand pairs in one order with carry-in zero; not every input transition or carry-in-one combination.",
+    "Inputs applied sequentially. Trace samples occur at end of server tick and may miss within-tick pulses.",
+    "JSON response byte counters are local adapter payloads, not tokens, network traffic or billing."
+  ],
+  "source": {
+    "generator": "examples/ripple-adder.mjs",
+    "sha256": "885c5254bb543e1d60a2f94b698dd78393e4ebd564305223add1f253bb11490a"
+  },
+  "jobs": [
+    {
+      "index": 1,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 189249,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 164,
+        "input_writes": 62,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 768767,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 164,
+            "total": 20344,
+            "max": 150
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 448,
+            "max": 137
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 3000,
+            "max": 76
+          },
+          "input_writes": {
+            "count": 62,
+            "total": 7732,
+            "max": 137
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 189960,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 167,
+        "input_writes": 64,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 775312,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 167,
+            "total": 20689,
+            "max": 154
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 451,
+            "max": 135
+          },
+          "input_writes": {
+            "count": 64,
+            "total": 7994,
+            "max": 135
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2734,
+            "max": 77
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 189666,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 167,
+        "input_writes": 64,
+        "circuit_observations": 639,
+        "trace_operations": 4,
+        "response_json_bytes": 774791,
+        "poll_sleeps": 639,
+        "latency_ms": {
+          "input_reads": {
+            "count": 167,
+            "total": 20615,
+            "max": 134
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 464,
+            "max": 139
+          },
+          "input_writes": {
+            "count": 64,
+            "total": 8061,
+            "max": 135
+          },
+          "circuit_observations": {
+            "count": 639,
+            "total": 2527,
+            "max": 96
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 190381,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 170,
+        "input_writes": 66,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 781937,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 170,
+            "total": 21102,
+            "max": 170
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 445,
+            "max": 185
+          },
+          "input_writes": {
+            "count": 66,
+            "total": 8242,
+            "max": 145
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2537,
+            "max": 29
+          }
+        }
+      }
+    },
+    {
+      "index": 5,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 189893,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 167,
+        "input_writes": 64,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 775733,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 167,
+            "total": 20790,
+            "max": 136
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 429,
+            "max": 141
+          },
+          "input_writes": {
+            "count": 64,
+            "total": 7960,
+            "max": 135
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2418,
+            "max": 25
+          }
+        }
+      }
+    },
+    {
+      "index": 6,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 190328,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 170,
+        "input_writes": 66,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 782208,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 170,
+            "total": 20990,
+            "max": 134
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 467,
+            "max": 151
+          },
+          "input_writes": {
+            "count": 66,
+            "total": 8295,
+            "max": 146
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2447,
+            "max": 25
+          }
+        }
+      }
+    },
+    {
+      "index": 7,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 190478,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 170,
+        "input_writes": 66,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 782111,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 170,
+            "total": 21059,
+            "max": 142
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 456,
+            "max": 130
+          },
+          "input_writes": {
+            "count": 66,
+            "total": 8248,
+            "max": 137
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2455,
+            "max": 16
+          }
+        }
+      }
+    },
+    {
+      "index": 8,
+      "cases": 32,
+      "status": "passed",
+      "duration_ms": 191169,
+      "trace_complete": true,
+      "trace_gaps": 0,
+      "restoration": "restored",
+      "metrics": {
+        "input_reads": 173,
+        "input_writes": 68,
+        "circuit_observations": 640,
+        "trace_operations": 4,
+        "response_json_bytes": 788373,
+        "poll_sleeps": 640,
+        "latency_ms": {
+          "input_reads": {
+            "count": 173,
+            "total": 21450,
+            "max": 136
+          },
+          "trace_operations": {
+            "count": 4,
+            "total": 447,
+            "max": 176
+          },
+          "input_writes": {
+            "count": 68,
+            "total": 8453,
+            "max": 141
+          },
+          "circuit_observations": {
+            "count": 640,
+            "total": 2522,
+            "max": 32
+          }
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "a": 0,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 0,
+      "observed": 0,
+      "pass": true,
+      "duration_ms": 5392,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": null
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 1,
+      "observed": 1,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 2,
+      "observed": 2,
+      "pass": true,
+      "duration_ms": 5883,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 3,
+      "observed": 3,
+      "pass": true,
+      "duration_ms": 5643,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 4,
+      "observed": 4,
+      "pass": true,
+      "duration_ms": 6130,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 5640,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5883,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5643,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 6385,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5629,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5894,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 6229,
+      "settled_ticks": 102,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5674,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 0,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5872,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 0,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5665,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 1,
+      "observed": 1,
+      "pass": true,
+      "duration_ms": 6626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 18
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 2,
+      "observed": 2,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 1,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 3,
+      "observed": 3,
+      "pass": true,
+      "duration_ms": 5887,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 1,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 4,
+      "observed": 4,
+      "pass": true,
+      "duration_ms": 5631,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 1,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 6123,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 57
+    },
+    {
+      "a": 1,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5670,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 1,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5887,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 1,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5646,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 78
+    },
+    {
+      "a": 1,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 6374,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 36
+    },
+    {
+      "a": 1,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5645,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 1,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5927,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 1,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5623,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 1,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 6179,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 60
+    },
+    {
+      "a": 1,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5642,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 1,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5866,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 80
+    },
+    {
+      "a": 1,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 86
+    },
+    {
+      "a": 2,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 2,
+      "observed": 2,
+      "pass": true,
+      "duration_ms": 5646,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 2,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 3,
+      "observed": 3,
+      "pass": true,
+      "duration_ms": 5639,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 2,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 4,
+      "observed": 4,
+      "pass": true,
+      "duration_ms": 5891,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 2,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 2,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 6143,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 2,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 2,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5893,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 2,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5613,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 2,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 6381,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 36
+    },
+    {
+      "a": 2,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5631,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 2,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5893,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 2,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5638,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 2,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 6169,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 56
+    },
+    {
+      "a": 2,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 2,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5988,
+      "settled_ticks": 102,
+      "last_recorded_lamp_change_offset_ticks": 61
+    },
+    {
+      "a": 2,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 3,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 3,
+      "observed": 3,
+      "pass": true,
+      "duration_ms": 6665,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 42
+    },
+    {
+      "a": 3,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 4,
+      "observed": 4,
+      "pass": true,
+      "duration_ms": 5652,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 3,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 5877,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 3,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5623,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 3,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 6131,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 72
+    },
+    {
+      "a": 3,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 3,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5917,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 3,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5661,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 3,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 6382,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 43
+    },
+    {
+      "a": 3,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5649,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 3,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5896,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 3,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5662,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 3,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 6185,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 76
+    },
+    {
+      "a": 3,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5676,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 85
+    },
+    {
+      "a": 3,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5884,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 3,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 4,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 4,
+      "observed": 4,
+      "pass": true,
+      "duration_ms": 5650,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5881,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5653,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 6138,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 4,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5643,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5878,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 6377,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 32
+    },
+    {
+      "a": 4,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5886,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 6120,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 38
+    },
+    {
+      "a": 4,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5661,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 4,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5886,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 4,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 5,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 5,
+      "observed": 5,
+      "pass": true,
+      "duration_ms": 6597,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 5,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5629,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 5,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5875,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 76
+    },
+    {
+      "a": 5,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5631,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 78
+    },
+    {
+      "a": 5,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 6132,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 33
+    },
+    {
+      "a": 5,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5660,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 5,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5888,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 5,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5668,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 5,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 6378,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 56
+    },
+    {
+      "a": 5,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5628,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 5,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5869,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 81
+    },
+    {
+      "a": 5,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5659,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 85
+    },
+    {
+      "a": 5,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 6138,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 33
+    },
+    {
+      "a": 5,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5656,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 5,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5905,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 5,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5625,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 6,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 6,
+      "observed": 6,
+      "pass": true,
+      "duration_ms": 5887,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 6,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 6,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5883,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 6,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5646,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 6,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 6124,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 6,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5644,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 6,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5877,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 6,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5623,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 6,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 6395,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 51
+    },
+    {
+      "a": 6,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5631,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 6,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5879,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 62
+    },
+    {
+      "a": 6,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 6,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 6135,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 6,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5626,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 6,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5886,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 6,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 7,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 7,
+      "observed": 7,
+      "pass": true,
+      "duration_ms": 6684,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 66
+    },
+    {
+      "a": 7,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5634,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 78
+    },
+    {
+      "a": 7,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5917,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 7,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5618,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 7,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 6171,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 47
+    },
+    {
+      "a": 7,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5624,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 7,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5877,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 7,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5634,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 7,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 6386,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 70
+    },
+    {
+      "a": 7,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5641,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 86
+    },
+    {
+      "a": 7,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5881,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 7,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5625,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 7,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 6172,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 47
+    },
+    {
+      "a": 7,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5651,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 7,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5872,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 7,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5661,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 8,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "duration_ms": 5629,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 5639,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5878,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5631,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 6134,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5889,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5628,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 6390,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 18
+    },
+    {
+      "a": 8,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5670,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5882,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5628,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 6145,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5609,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 8,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5917,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 8,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5623,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 9,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 9,
+      "observed": 9,
+      "pass": true,
+      "duration_ms": 6686,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 18
+    },
+    {
+      "a": 9,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5618,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 9,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5931,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 9,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5612,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 9,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 6177,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 60
+    },
+    {
+      "a": 9,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5636,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 9,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5913,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 80
+    },
+    {
+      "a": 9,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 86
+    },
+    {
+      "a": 9,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 6379,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 32
+    },
+    {
+      "a": 9,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5679,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 9,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5884,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 9,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 9,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 6183,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 56
+    },
+    {
+      "a": 9,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5619,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 9,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5909,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 76
+    },
+    {
+      "a": 9,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5638,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 10,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 10,
+      "observed": 10,
+      "pass": true,
+      "duration_ms": 5893,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 10,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 5636,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 10,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5927,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 10,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 10,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 6126,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 56
+    },
+    {
+      "a": 10,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 10,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5886,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 62
+    },
+    {
+      "a": 10,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5642,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 10,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 6378,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 32
+    },
+    {
+      "a": 10,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 10,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5886,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 10,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 10,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 6127,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 10,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 10,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5900,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 10,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 5620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 11,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 11,
+      "observed": 11,
+      "pass": true,
+      "duration_ms": 6620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 42
+    },
+    {
+      "a": 11,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5625,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 11,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5871,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 11,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5620,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 11,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 6164,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 75
+    },
+    {
+      "a": 11,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5611,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 86
+    },
+    {
+      "a": 11,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5876,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 11,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5623,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 11,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 6429,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 42
+    },
+    {
+      "a": 11,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 11,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5913,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 11,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5646,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 11,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 6135,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 72
+    },
+    {
+      "a": 11,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5665,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 11,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 5881,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 11,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 26,
+      "observed": 26,
+      "pass": true,
+      "duration_ms": 5629,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 12,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 12,
+      "observed": 12,
+      "pass": true,
+      "duration_ms": 5918,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 5651,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5879,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5634,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 12,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 6132,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 38
+    },
+    {
+      "a": 12,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5644,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5906,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5661,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 6369,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 12,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5669,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5887,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5669,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 6133,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 12,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 5629,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 12,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 26,
+      "observed": 26,
+      "pass": true,
+      "duration_ms": 5882,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 12,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 27,
+      "observed": 27,
+      "pass": true,
+      "duration_ms": 5630,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 13,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 13,
+      "observed": 13,
+      "pass": true,
+      "duration_ms": 6639,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 32
+    },
+    {
+      "a": 13,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 5677,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 13,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5874,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 81
+    },
+    {
+      "a": 13,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 85
+    },
+    {
+      "a": 13,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 6184,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 32
+    },
+    {
+      "a": 13,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 13,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5877,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 13,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5627,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 13,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 6372,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 51
+    },
+    {
+      "a": 13,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5639,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 13,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5876,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 13,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5628,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 13,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 6123,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 33
+    },
+    {
+      "a": 13,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 26,
+      "observed": 26,
+      "pass": true,
+      "duration_ms": 5636,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 13,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 27,
+      "observed": 27,
+      "pass": true,
+      "duration_ms": 5925,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 52
+    },
+    {
+      "a": 13,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 28,
+      "observed": 28,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 14,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 14,
+      "observed": 14,
+      "pass": true,
+      "duration_ms": 6137,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 14,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 5640,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 14,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5890,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 61
+    },
+    {
+      "a": 14,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5635,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 14,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 6146,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 14,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 10
+    },
+    {
+      "a": 14,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5881,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 14,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5664,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 14,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 6382,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 48
+    },
+    {
+      "a": 14,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 5668,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 14,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5879,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 14,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 5633,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 14,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 26,
+      "observed": 26,
+      "pass": true,
+      "duration_ms": 6166,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 14,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 27,
+      "observed": 27,
+      "pass": true,
+      "duration_ms": 5659,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 14,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 28,
+      "observed": 28,
+      "pass": true,
+      "duration_ms": 5887,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 14,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 29,
+      "observed": 29,
+      "pass": true,
+      "duration_ms": 5630,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 9
+    },
+    {
+      "a": 15,
+      "b": 0,
+      "carry_in": 0,
+      "expected": 15,
+      "observed": 15,
+      "pass": true,
+      "duration_ms": 6680,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 70
+    },
+    {
+      "a": 15,
+      "b": 1,
+      "carry_in": 0,
+      "expected": 16,
+      "observed": 16,
+      "pass": true,
+      "duration_ms": 5632,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 86
+    },
+    {
+      "a": 15,
+      "b": 2,
+      "carry_in": 0,
+      "expected": 17,
+      "observed": 17,
+      "pass": true,
+      "duration_ms": 5914,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 15,
+      "b": 3,
+      "carry_in": 0,
+      "expected": 18,
+      "observed": 18,
+      "pass": true,
+      "duration_ms": 5634,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 15,
+      "b": 4,
+      "carry_in": 0,
+      "expected": 19,
+      "observed": 19,
+      "pass": true,
+      "duration_ms": 6168,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 47
+    },
+    {
+      "a": 15,
+      "b": 5,
+      "carry_in": 0,
+      "expected": 20,
+      "observed": 20,
+      "pass": true,
+      "duration_ms": 5617,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 54
+    },
+    {
+      "a": 15,
+      "b": 6,
+      "carry_in": 0,
+      "expected": 21,
+      "observed": 21,
+      "pass": true,
+      "duration_ms": 5894,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 15,
+      "b": 7,
+      "carry_in": 0,
+      "expected": 22,
+      "observed": 22,
+      "pass": true,
+      "duration_ms": 5628,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 30
+    },
+    {
+      "a": 15,
+      "b": 8,
+      "carry_in": 0,
+      "expected": 23,
+      "observed": 23,
+      "pass": true,
+      "duration_ms": 6387,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 67
+    },
+    {
+      "a": 15,
+      "b": 9,
+      "carry_in": 0,
+      "expected": 24,
+      "observed": 24,
+      "pass": true,
+      "duration_ms": 5622,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 77
+    },
+    {
+      "a": 15,
+      "b": 10,
+      "carry_in": 0,
+      "expected": 25,
+      "observed": 25,
+      "pass": true,
+      "duration_ms": 5871,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 15,
+      "b": 11,
+      "carry_in": 0,
+      "expected": 26,
+      "observed": 26,
+      "pass": true,
+      "duration_ms": 5659,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 29
+    },
+    {
+      "a": 15,
+      "b": 12,
+      "carry_in": 0,
+      "expected": 27,
+      "observed": 27,
+      "pass": true,
+      "duration_ms": 6129,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 48
+    },
+    {
+      "a": 15,
+      "b": 13,
+      "carry_in": 0,
+      "expected": 28,
+      "observed": 28,
+      "pass": true,
+      "duration_ms": 5661,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 53
+    },
+    {
+      "a": 15,
+      "b": 14,
+      "carry_in": 0,
+      "expected": 29,
+      "observed": 29,
+      "pass": true,
+      "duration_ms": 5889,
+      "settled_ticks": 100,
+      "last_recorded_lamp_change_offset_ticks": 28
+    },
+    {
+      "a": 15,
+      "b": 15,
+      "carry_in": 0,
+      "expected": 30,
+      "observed": 30,
+      "pass": true,
+      "duration_ms": 5668,
+      "settled_ticks": 101,
+      "last_recorded_lamp_change_offset_ticks": 29
+    }
+  ]
+}
