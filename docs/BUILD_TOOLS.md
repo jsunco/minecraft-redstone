@@ -62,7 +62,8 @@ a fresh plan.
 - Clone uses ordinary `normal` copy, not move/masked/cross-dimension copy. Its
   source and destination must fit the same registered lab and must not overlap.
 - A restricted palette permits basic supports, colored wool/concrete/glass,
-  redstone, switches, repeaters, comparators, lamps, pistons, and observers.
+  redstone, switches, repeaters, comparators, lamps, waxed copper bulbs, pistons,
+  and observers. Waxed bulbs retain a toggle bit without changing through oxidation.
   NBT injection, arbitrary commands, fluids, TNT, command blocks, portals,
   inventory/container writes, and player/entity changes are not exposed. Unknown
   existing blocks in the registered region cause planning to stop rather than

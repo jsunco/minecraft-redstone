@@ -28,7 +28,7 @@ export const buildStatusSchema = z.object({offset: z.number().int().min(0).max(B
 
 // A deliberately small construction palette. No NBT, command blocks, liquids,
 // explosives, portals, containers, or entity tools are exposed by this service.
-const palette = new Set(('air cave_air void_air dirt grass_block stone smooth_stone cobblestone deepslate glass tinted_glass quartz_block smooth_quartz sandstone bricks obsidian bedrock glowstone sea_lantern redstone_wire redstone_torch redstone_wall_torch redstone_block redstone_lamp repeater comparator lever stone_button polished_blackstone_button oak_button stone_pressure_plate light_weighted_pressure_plate heavy_weighted_pressure_plate piston sticky_piston observer target oak_planks stone_slab smooth_stone_slab quartz_slab').split(' ').map(id => `minecraft:${id}`));
+const palette = new Set(('air cave_air void_air dirt grass_block stone smooth_stone cobblestone deepslate glass tinted_glass quartz_block smooth_quartz sandstone bricks obsidian bedrock glowstone sea_lantern redstone_wire redstone_torch redstone_wall_torch redstone_block redstone_lamp waxed_copper_bulb repeater comparator lever stone_button polished_blackstone_button oak_button stone_pressure_plate light_weighted_pressure_plate heavy_weighted_pressure_plate piston sticky_piston observer target oak_planks stone_slab smooth_stone_slab quartz_slab').split(' ').map(id => `minecraft:${id}`));
 for (const color of 'white orange magenta light_blue yellow lime pink gray light_gray cyan purple blue brown green red black'.split(' ')) {
   for (const material of ['wool', 'concrete', 'stained_glass', 'terracotta']) palette.add(`minecraft:${color}_${material}`);
 }
