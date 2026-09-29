@@ -11,6 +11,7 @@ import { CircuitService, circuitSchema, circuitObserveSchema, circuitTraceSchema
 
 import { TestRunnerService, testRunSchema } from './test-runner-service.mjs';
 import { ProjectLock } from './project-lock.mjs';
+import { AdminService, adminToolSchema, clientToolSchema } from './admin-service.mjs';
 
 export const circuitTestSchema = z.object({action: z.enum(['validate', 'start', 'status', 'cancel']), spec: testRunSchema.optional(), job_id: z.string().uuid().optional()}).strict();
 const reply = value => ({content: [{type: 'text', text: JSON.stringify(value)}]});
@@ -27,6 +28,7 @@ const circuits = Object.fromEntries(['get','observe','trace','register'].map(met
 const builds = Object.fromEntries(['registerRegion','createPlan','preview','apply','verify','undo','status'].map(method => [method, (...args) => buildService()[method](...args)]));
 const runner = new TestRunnerService(service.bridge, circuits, {...runnerOptions, stateDir:join(state,'tests'), lock});
 const observer = new ObserverService(service.bridge);
+const admin = new AdminService(service.bridge,{stateDir:join(state,'admin'),lock});
 const server = new McpServer({name: 'minecraft-redstone-assistant', version: '0.2.0'});
 // Serialize calls so two polls cannot race the delta baseline or screenshot cooldown.
 let queue = Promise.resolve();
@@ -43,6 +45,8 @@ function register(name, description, schema, action, readOnly = true, immediate 
   });
 }
 register('connection_check', 'Check local game bridge connectivity and available read tools; reports missing capabilities. Does not prove a world is loaded.', checkSchema, args => service.check(args));
+register('admin_control', 'Authenticated native console and tick controls, without player chat/camera. Read status first; writes require matching expected_session and expected_world, share the construction writer lock, and are journaled. command has full console authority and is not automatically undoable. Requires the updated admin-enabled helper.', adminToolSchema, args=>admin.run(args),false);
+register('client_control', 'Authenticated client options and world lifecycle. Read status first; exact current session/save required. Create/open only at title, quit saves the existing world. Creation uses a separate vanilla Void Creative world and refuses overwrite. Poll status after asynchronous lifecycle receipts; receipt alone is not completion.', clientToolSchema, args=>admin.client(args),false);
 register('telemetry_status', 'Compact mode and payload-byte counters. No game connection.', z.object({}).strict(), () => service.status());
 register('telemetry_configure', 'Opt in: data sends compact state deltas; hybrid also permits explicitly requested images; disabled stops reads. Set at most 8 named read-only watches. Every configure resets baselines.', configSchema, args => service.configure(args));
 register('telemetry_source_schema', 'Inspect the live argument schema for one supported read-only world/client tool before configuring a watch.', schemaSchema, args => service.schema(args));

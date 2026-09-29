@@ -19,8 +19,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** Per-server observer. All methods must run on the server thread; never loads chunks or edits blocks. */
+/** Per-server observer and explicit admin facade. All instance methods run on the server thread. */
 public final class NativeTelemetry {
+    private static volatile NativeTelemetry active;
     public record Point(int x, int y, int z) {}
     private record Watch(String dimension, List<Point> positions, Set<String> properties, TickRecorder recorder) {}
     @FunctionalInterface
@@ -32,18 +33,50 @@ public final class NativeTelemetry {
     private MinecraftServer server;
     private final String sessionId = UUID.randomUUID().toString();
     private final Map<String, Watch> watches = new LinkedHashMap<>();
+    private Object quitLease;
+    private boolean closed;
 
     public NativeTelemetry(MinecraftServer server, ObjectMapper mapper) {
         this(mapper, () -> server.getTickCount(), () -> {
             if (!server.isSameThread()) throw new IllegalStateException("Native telemetry requires Minecraft server thread");
         }, (dimension, positions, properties) -> readWorld(server, dimension, positions, properties));
         this.server = server;
+        active = this;
     }
     NativeTelemetry(ObjectMapper mapper, java.util.function.LongSupplier clock, Runnable threadCheck, StateReader stateReader) {
         this.mapper = mapper; this.clock = clock; this.threadCheck = threadCheck; this.stateReader = stateReader;
     }
     private void checkThread() { threadCheck.run(); }
     public String sessionId() { return sessionId; }
+    /** Exact server identity lookup for client lifecycle guards; never adopts another server's session. */
+    public static String sessionFor(MinecraftServer server) {
+        NativeTelemetry current = active;
+        return current != null && server != null && current.server == server ? current.sessionId : null;
+    }
+    /**
+     * Seal recorder admission before a client-thread disconnect is scheduled. Acquisition and
+     * release both run on this exact server's thread; release is only for a failed disconnect.
+     */
+    public static Runnable acquireQuitLease(MinecraftServer server, String expectedSession) {
+        NativeTelemetry current = active;
+        if (server == null || current == null || current.server != server)
+            throw new IllegalStateException("Native telemetry does not belong to the requested server");
+        return current.acquireQuitLease(expectedSession);
+    }
+    Runnable acquireQuitLease(String expectedSession) {
+        checkThread();
+        if (!sessionId.equals(expectedSession)) throw new IllegalStateException("Native telemetry session changed");
+        if (closed || quitLease != null) throw new IllegalStateException("Server quit is already in progress");
+        if (watches.values().stream().anyMatch(w -> w.recorder().active()))
+            throw new IllegalStateException("Cannot quit while a native recorder is active");
+        Object token = new Object();
+        quitLease = token;
+        return () -> {
+            checkThread();
+            // A delayed or duplicate release must not reopen a closed server or a later lease.
+            if (!closed && quitLease == token) quitLease = null;
+        };
+    }
     private long tick() { return clock.getAsLong(); }
     private ObjectNode envelope() {
         ObjectNode out = mapper.createObjectNode();
@@ -101,6 +134,7 @@ public final class NativeTelemetry {
     }
     public ObjectNode start(String dimension, List<Point> positions, Set<String> properties, int duration, int capacity) {
         checkThread();
+        if (closed || quitLease != null) throw new IllegalStateException("Recorder admission is closed while server quits");
         if (watches.size() >= 8) throw new IllegalStateException("Recorder limit 8 reached; discard a completed recorder");
         if (positions.isEmpty() || positions.size() > 64) throw new IllegalArgumentException("1..64 positions required");
         if (duration < 1 || duration > 12000) throw new IllegalArgumentException("duration_ticks must be 1..12000");
@@ -162,5 +196,15 @@ public final class NativeTelemetry {
         ObjectNode out = NativeInventory.read(server, mapper, uuid, includeComponents);
         out.put("session_id",sessionId); out.put("server_tick",tick()); out.put("atomic",true); return out;
     }
-    public void close() { checkThread(); watches.clear(); }
+    private AdminControl admin() {
+        checkThread();
+        if (server == null) throw new IllegalStateException("Live server required for admin control");
+        return new AdminControl(mapper, sessionId, threadCheck,
+                () -> watches.values().stream().anyMatch(w -> w.recorder().active()),
+                new VanillaAdminBackend(server, mapper));
+    }
+    public ObjectNode adminStatus() { return admin().status(); }
+    public ObjectNode adminCommand(String expected, String command, String dimension) { return admin().command(expected, command, dimension); }
+    public ObjectNode adminTick(String expected, String action, Double rate, Integer ticks) { return admin().tickControl(expected, action, rate, ticks); }
+    public void close() { checkThread(); closed = true; quitLease = null; watches.clear(); if (active == this) active = null; }
 }

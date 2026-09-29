@@ -17,6 +17,7 @@ import com.chapmanjw.minecraft.fabric.mcp.tools.block.BlockTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.blockentity.BlockEntityTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.bossbar.BossbarTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.command.CommandTools;
+import com.chapmanjw.minecraft.fabric.mcp.redstone.AdminTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.contentregistry.ContentRegistryTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.data.DataTools;
 import com.chapmanjw.minecraft.fabric.mcp.tools.datapack.DatapackTools;
@@ -89,6 +90,9 @@ public final class ToolRegistration {
                     ServerSetMotdTool.class,
                     ServerSaveAllWorldsTool.class,
                     ServerReloadResourcesTool.class,
+                    AdminTools.Command.class,
+                    AdminTools.Status.class,
+                    AdminTools.Tick.class,
                     // level
                     LevelListDimensionsTool.class,
                     LevelGetDimensionInfoTool.class,

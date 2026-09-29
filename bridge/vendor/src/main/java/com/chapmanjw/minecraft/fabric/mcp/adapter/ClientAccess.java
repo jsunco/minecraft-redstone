@@ -67,4 +67,13 @@ public interface ClientAccess {
      * other than the player inventory is open, a summary of its slot contents.
      */
     JsonNode screen();
+
+    /** Authenticated administrative lifecycle seam; unsupported by inspection-only adapters. */
+    default JsonNode lifecycleStatus() { throw new UnsupportedOperationException("Client administration unavailable"); }
+    default JsonNode updateOptions(String session, String world, Integer render, Integer simulation, Integer fps) {
+        throw new UnsupportedOperationException("Client administration unavailable");
+    }
+    default JsonNode worldLifecycle(String action, String session, String world, String destination) {
+        throw new UnsupportedOperationException("Client administration unavailable");
+    }
 }

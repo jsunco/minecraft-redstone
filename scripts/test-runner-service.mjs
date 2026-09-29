@@ -30,7 +30,9 @@ const summaryFields=['job_id','circuit_id','status','owner_pid','started_at','fi
 
 /** Finite local experiments. All actual output values come from CircuitService. */
 export class TestRunnerService {
-  constructor(bridge,circuits,{stateDir=null,lock=null,clock=()=>Date.now(),sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),pollIntervalMs=50,stallTimeoutMs=5000}={}) {
+  constructor(bridge,circuits,{stateDir=null,lock=null,clock=()=>Date.now(),sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),pollIntervalMs=50,stallTimeoutMs=5000,tickRate=20}={}) {
+    if(!Number.isFinite(tickRate)||tickRate<1||tickRate>10000)throw new Error('tickRate must be the verified target rate, between1 and10000.');
+    this.tickRate=tickRate;
     this.bridge=bridge;this.circuits=circuits;this.stateDir=stateDir;this.lock=lock;this.clock=clock;this.sleep=sleep;
     this.pollIntervalMs=pollIntervalMs;this.stallTimeoutMs=stallTimeoutMs;this.jobs=new Map();this.current=null;this.closed=false;
     if(stateDir){mkdirSync(join(stateDir,'runs'),{recursive:true,mode:0o700});this.reload();}
@@ -221,8 +223,13 @@ export class TestRunnerService {
         const rows=await this.readInputs(context,{cleanup:true,allowInvalid:true}),row=rows.get(item.name);
         if(structure(row)!==structure(item.original)||![item.expected_powered,item.pending_powered].includes(row.properties.powered))throw Error('Input changed concurrently; restoration skipped.');
         item.expected_powered=row.properties.powered;delete item.pending_powered;
-        await this.writeInput(context,item,item.original.properties.powered,{cleanup:true});
-        const after=(await this.readInputs(context,{cleanup:true,allowInvalid:true})).get(item.name);
+        // The final test phase may already have restored this lever. A fresh,
+        // conflict-checked matching read needs no redundant block update.
+        let after=row;
+        if(canonical(row.properties)!==canonical(item.original.properties)){
+          await this.writeInput(context,item,item.original.properties.powered,{cleanup:true});
+          after=(await this.readInputs(context,{cleanup:true,allowInvalid:true})).get(item.name);
+        }
         if(canonical(after.properties)!==canonical(item.original.properties)||after.id!==item.original.id)throw Error('Restored input did not match original readback.');
         details.push({name:item.name,status:'restored'});
       }catch(error){details.push({name:item.name,status:'skipped',reason:cleanError(error)});}
@@ -237,7 +244,7 @@ export class TestRunnerService {
       job.input_journal=job.spec.inputs.map(input=>({name:input.name,original:originals.get(input.name),expected_powered:originals.get(input.name).properties.powered,touched:false}));
       this.save(job);this.record(job,{kind:'input_baseline',session_id:job.session_id,tick:context.lastTick,inputs:job.input_journal});
       if(job.spec.trace){
-        await this.traceCall(context,{action:'start',id:job.circuit_id,duration_ticks:Math.min(12000,Math.ceil(job.spec.timeout_ms/50)+200)},false,trace=>{
+        await this.traceCall(context,{action:'start',id:job.circuit_id,duration_ticks:Math.min(12000,Math.ceil(job.spec.timeout_ms*this.tickRate/1000)+200)},false,trace=>{
           // Keep recorder identity before a post-response cancellation/deadline check can throw.
           job.trace={trace_id:trace.trace_id,artifact:trace.artifact,complete:trace.complete,required_through_tick:trace.start_tick};this.save(job);
         });

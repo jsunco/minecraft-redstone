@@ -6,6 +6,7 @@ import com.chapmanjw.minecraft.fabric.mcp.compat.ToolCompatibilityFilter;
 import com.chapmanjw.minecraft.fabric.mcp.protocol.Tool;
 import com.chapmanjw.minecraft.fabric.mcp.protocol.ToolRegistry;
 import com.chapmanjw.minecraft.fabric.mcp.tools.client.ClientTools;
+import com.chapmanjw.minecraft.fabric.mcp.tools.client.ClientAdminTools;
 
 /**
  * The client-only tool universe — the {@code client} category. Kept separate from
@@ -29,7 +30,12 @@ public final class ClientToolRegistration {
                     ClientTools.SenseCrosshair.class,
                     ClientTools.SenseRaycast.class,
                     ClientTools.SenseEntities.class,
-                    ClientTools.SenseScreen.class);
+                    ClientTools.SenseScreen.class,
+                    ClientAdminTools.Status.class,
+                    ClientAdminTools.Options.class,
+                    ClientAdminTools.Create.class,
+                    ClientAdminTools.Open.class,
+                    ClientAdminTools.Quit.class);
 
     /** Build the client-only registry, sharing {@link ToolRegistration}'s filter loop. */
     public static ToolRegistry buildRegistry(ToolCompatibilityFilter filter) {

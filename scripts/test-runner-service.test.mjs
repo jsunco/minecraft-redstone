@@ -37,6 +37,13 @@ function fixture(t,options={}){
 }
 const writes=f=>f.calls.filter(c=>c.tool==='block_set_state');
 
+test('verified accelerated rate sizes trace lifetime in game ticks, bounded by native capacity',async t=>{
+  const f=fixture(t,{tickRate:100}),input={...spec(),trace:true,timeout_ms:300000};
+  assert.equal(decode(await f.runner.run(input)).status,'passed');
+  assert.equal(f.calls.find(c=>c.tool==='block_watch_start').args.duration_ticks,12000);
+  assert.throws(()=>new TestRunnerService(f.bridge,f.circuits,{tickRate:NaN}),/tickRate/);
+});
+
 test('runs a complete truth table from CircuitService observations and restores exact lever orientations',async t=>{
   const f=fixture(t),before=structuredClone([...f.world]);const result=decode(await f.runner.run(spec()));
   assert.equal(result.status,'passed');assert.equal(result.completed,4);assert.equal(result.passed,4);assert.equal(result.restore.status,'restored');
@@ -54,6 +61,18 @@ test('validates every case, exact input names and output widths before reading o
     const input=spec();change(input);assert.throws(()=>f.runner.start(input));
   }
   assert.equal(f.calls.length,0);assert.equal(f.runner.jobs.size,0);
+});
+
+test('cleanup verifies already restored levers without extra block updates',async t=>{
+  const f=fixture(t),input=spec();
+  input.cases=[input.cases[1],input.cases[0]];
+  const result=decode(await f.runner.run(input));
+  assert.equal(result.status,'passed');
+  assert.equal(result.restore.status,'restored');
+  assert.deepEqual(result.restore.inputs,[{name:'a',status:'restored'}]);
+  assert.equal(writes(f).length,2,'Only the requested on and off transitions should write');
+  const lastWrite=f.calls.findLastIndex(c=>c.tool==='block_set_state');
+  assert.ok(f.calls.slice(lastWrite+1).some(c=>c.tool==='block_get_states_batch'&&c.args.positions.length===2));
 });
 
 test('initial unloaded or non-lever inputs fail before any world writes',async t=>{

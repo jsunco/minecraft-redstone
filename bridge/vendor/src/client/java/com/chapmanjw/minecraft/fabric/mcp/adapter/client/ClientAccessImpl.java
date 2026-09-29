@@ -62,10 +62,20 @@ public final class ClientAccessImpl implements ClientAccess {
 
     private final MinecraftMainThreadExecutor clientExecutor;
     private final ObjectMapper mapper;
+    private final ClientLifecycleImpl lifecycle;
 
     public ClientAccessImpl(MinecraftMainThreadExecutor clientExecutor, ObjectMapper mapper) {
         this.clientExecutor = clientExecutor;
         this.mapper = mapper;
+        this.lifecycle = new ClientLifecycleImpl(clientExecutor, mapper);
+    }
+
+    @Override public JsonNode lifecycleStatus() { return lifecycle.status(); }
+    @Override public JsonNode updateOptions(String session,String world,Integer render,Integer simulation,Integer fps) {
+        return lifecycle.updateOptions(session,world,render,simulation,fps);
+    }
+    @Override public JsonNode worldLifecycle(String action,String session,String world,String destination) {
+        return lifecycle.lifecycle(action,session,world,destination);
     }
 
     @Override
