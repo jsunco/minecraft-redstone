@@ -1,6 +1,6 @@
 # minecraft redstone
 
-i started this while building [tiny-gpu in minecraft](https://github.com/jsunco/tiny-gpu-minecraft). i wanted codex to help build and debug the redstone without sending it a full screenshot every turn.
+i started this while building [minecraft gpu](https://github.com/jsunco/minecraft-gpu). i wanted codex to help build and debug the redstone without sending it a full screenshot every turn.
 
 the bridge exposes blocks, inventories and player state through mcp. a local adapter sends selected fields and changes, with screenshots when needed. it also adds named signals and buses, tick recordings, local test runs, and build previews with backups and undo. the [command centre](docs/COMMAND_CENTRE.md) controls ticks, console commands, render settings and world loading directly. independent screenshots need a second spectator client.
 

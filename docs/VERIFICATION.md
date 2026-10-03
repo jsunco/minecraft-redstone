@@ -13,7 +13,7 @@ Updated 2026-10-02. Recorded game checks used Minecraft Java 26.3, Fabric Loader
 
 [Adder results and recording](ADDER_CASE_STUDY.md), [tick trace](TIMING_CASE_STUDY.md), [read benchmark](LIVE_BENCHMARK.md) and [media provenance](assets/README.md) retain the evidence.
 
-The GPU design and build status live in [tiny-gpu-minecraft](https://github.com/jsunco/tiny-gpu-minecraft). This repository contains the general tooling and its circuit examples.
+The GPU design and build status live in [minecraft gpu](https://github.com/jsunco/minecraft-gpu). This repository contains the general tooling and its circuit examples.
 
 One 15-phase storage test took 190.748 seconds at 20 TPS and 72.310 seconds at 100 TPS, including host overhead. This pair does not establish sustained 100 TPS or whole-build speedup. Reload returned the target to 20 TPS before it was restored to 100.
 
