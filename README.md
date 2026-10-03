@@ -2,7 +2,9 @@
 
 i started this while working on a minecraft version of [adam majmudar's tiny-gpu](https://github.com/adam-maj/tiny-gpu). i wanted codex to help build and debug the redstone without sending it a full screenshot every turn.
 
-the bridge exposes blocks, inventories and player state through mcp. a local adapter sends selected fields and changes, with screenshots when needed. it also adds named signals and buses, tick recordings, local test runs, and build previews with backups and undo. the [command centre](docs/COMMAND_CENTRE.md) controls ticks, console commands, render settings and world loading directly. a separate spectator controller is included.
+the bridge exposes blocks, inventories and player state through mcp. a local adapter sends selected fields and changes, with screenshots when needed. it also adds named signals and buses, tick recordings, local test runs, and build previews with backups and undo. the [command centre](docs/COMMAND_CENTRE.md) controls ticks, console commands, render settings and world loading directly. independent screenshots need a second spectator client.
+
+the gpu now has a 12,872-block register file that passed 26,688 checks in minecraft. the full two-core, eight-lane layout is still being designed offline. [current results and limits](docs/VERIFICATION.md).
 
 [![the four-bit adder in minecraft](docs/assets/adder-overview.png)](https://jsun.ai/minecraft-mcp/)
 

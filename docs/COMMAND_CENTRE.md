@@ -18,6 +18,11 @@ receipt starts the operation; poll status to establish completion. The target
 rate is not a measurement of achieved TPS. Active native recordings block
 administrative commands so a test cannot silently change its timing model.
 
+Reload resets the target rate to 20 TPS; read status again before an accelerated
+run. `server_tick` restarts with the server, while `world_game_time` persists.
+Compare elapsed ticks within one clock and session, never their absolute values
+across clocks.
+
 Use `action:"command"` and a single `command` string for vanilla commands such
 as `forceload query`, `time set day`, gamerules, and `save-all flush`. Commands
 have full console authority, report native feedback/errors, and are not
