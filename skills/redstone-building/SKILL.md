@@ -61,4 +61,4 @@ First live acceptance: inspect an empty agreed lab, place a lever/dust/lamp circ
 
 Helpers may design/place/copy/inspect; real redstone performs the computation. Verify the completed machine in unmodified Minecraft using a preserved world copy. Never downgrade a newer save.
 
-Read `README.md` and `docs/BUILD_TOOLS.md`, `docs/CIRCUIT_TOOLS.md`, `docs/OBSERVER.md`, and `docs/ACCESS_REQUIREMENTS.md` for detailed contracts and outstanding runtime checks.
+Read `README.md` and `docs/BUILD_TOOLS.md`, `docs/CIRCUIT_TOOLS.md`, `docs/MINECRAFT_SETUP.md`, and `docs/VERIFICATION.md` for detailed contracts and outstanding runtime checks.

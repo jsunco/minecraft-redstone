@@ -8,7 +8,7 @@ the gpu now has a 12,872-block register file that passed 26,688 checks in minecr
 
 [![the four-bit adder in minecraft](docs/assets/adder-overview.png)](https://jsun.ai/minecraft-mcp/)
 
-[the demo and recording](https://jsun.ai/minecraft-mcp/) · [arithmetic case study](docs/ADDER_CASE_STUDY.md) · [tick traces](docs/TIMING_CASE_STUDY.md) · [what this adds](docs/COMPARISON.md)
+[the demo](https://jsun.ai/minecraft-mcp/) · [results](docs/VERIFICATION.md)
 
 ## running it
 
@@ -21,6 +21,6 @@ npm ci --ignore-scripts
 npm test
 ```
 
-then [build the fabric bridge](bridge/README.md) and follow the [setup notes](docs/MINECRAFT_SETUP.md). [test runner](docs/TEST_RUNNER.md), [architecture](docs/ARCHITECTURE.md) and [tool docs](docs/CIRCUIT_TOOLS.md) cover the rest.
+then [build the fabric bridge](bridge/README.md) and follow the [setup notes](docs/MINECRAFT_SETUP.md). [building](docs/BUILD_TOOLS.md), [signals](docs/CIRCUIT_TOOLS.md) and [tests](docs/TEST_RUNNER.md) cover the rest.
 
 built on [chapmanjw's fabric mcp server](https://github.com/chapmanjw/minecraft-java-fabric-mcp-server). its mit license and pinned source are in [bridge/](bridge/).

@@ -47,7 +47,7 @@ Schema catalogs share discovery, expire after their time limit, and invalidate o
 
 ## Pictures and timing
 
-`telemetry_view` requires hybrid mode, defaults to `downscale: 4` (range 2–8), preserves the GUI with `close_screen: false`, and limits successful images to one per 30 seconds and 512 KB decoded. It takes no automatic pictures and performs no cropping. It sees the user's client. [Observer control](docs/OBSERVER.md) explicitly targets a separate spectator client.
+`telemetry_view` requires hybrid mode, defaults to `downscale: 4` (range 2–8), preserves the GUI with `close_screen: false`, and limits successful images to one per 30 seconds and 512 KB decoded. It takes no automatic pictures and performs no cropping. It sees the user's client. [Observer control](docs/MINECRAFT_SETUP.md#optional-spectator) explicitly targets a separate spectator client.
 
 Separate watch calls are not an atomic world snapshot. [`circuit_observe`](docs/CIRCUIT_TOOLS.md) reads a native batch in one server task. `circuit_trace` records finite end-of-server-tick samples with cursors, gap recovery, and local artifacts. No polling strategy reconstructs missed pulses.
 
